@@ -29,6 +29,17 @@ import ajedrez.Equipo;
 	//	this.cleda.setFila(fila);	//aqui tengo que enviar el numero de fila de la celda
 	//	this.cleda.setColumna(columna); //aqui tengo que enviar el numerode
 	}
+	public boolean validarMovimiento (int f, int c) {
+		//Se fija si la celda a donde se apunta esta dentro de las coordenadas de tablero
+		if (f<0 || f>7)		
+			return false;
+		if (c<0 || c>7)
+			return false;
+
+		return true;
+	}
+	
+	
 	/*Geters y Seters*/
 	public Celda getCelda() {
 		return celda;

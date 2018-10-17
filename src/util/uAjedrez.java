@@ -24,7 +24,7 @@ public abstract class uAjedrez {
 		/*Creo Los Peones*/
 		for(int i=0;i<8;i++) {
 			tablero.getCelda(1,i).setPieza(new Peon(tablero.getCelda(1,i)));
-		}		
+		}
 	}
 	
 	public static void crearPiezasBlancas(Tablero tablero){

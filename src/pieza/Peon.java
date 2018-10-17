@@ -17,27 +17,33 @@ public class Peon extends Pieza {
 	
 	/*Metodos*/
 	@Override
-	public ArrayList<Celda> getMovimientosPosibles(){
-		
-		/*
-		 * Se podria hacer un arreglo para guardar las celdas posibles, en este caso peon
-		 * son solo 2 celdas, pero en las demas piezas se podria generar en vez de dos celdas
-		 * un arreglo de celdas y luego insertarlas en la lista???
-		 * */
-		/*habtria que analizar el equipo para ver si el  movimento es con menos o  mas*/
-		ArrayList<Celda> listaCeldas = new ArrayList<Celda>();
-		Celda c1 = new Celda(this.getCelda().getFila()-1, this.getCelda().getColumna());
-		Celda c2 = new Celda(this.getCelda().getFila()-2, this.getCelda().getColumna());
-		
-		//Este es movimiento unicamente si es su primer movimiento
-		if(this.getCelda().getFila()==6) {//Si es el primer movimiento
-			listaCeldas.add(c2);
+	public ArrayList<Celda> getMovimientosPosibles() {
+		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
+		Celda c = this.getCelda();// Coordenada actual de la pieza
+		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		boolean condicion = false; // Condicion de celda disponible
+		int f1, f2;
+		if(this.getEquipo().getNombre()=="Blanca") {
+			f2 = 2;
+			f1 = 1;
+		} else {
+			f2 = -2;
+			f1 = -1;
 		}
-		
-		listaCeldas.add(c1);//Este es el movimiento normal
-		return listaCeldas;
-	
-		
+		Celda c1 = tablero.getCelda(c.getFila() + f2, c.getColumna()); // Me ubico en la celda para dos moviimentos
+		// Si es el primer movimiento
+		if ((c.getFila() == 1) || (c.getFila() == 6)) {// Si es su primer movimiento
+			condicion = c1.puedeIngresar(this); // Si no tiene pieza
+			if (condicion) {
+				listaCelda.add(c1);
+			}
+		}
+		c1 = tablero.getCelda(c.getFila() + f1, c.getColumna()); // Movimiento normal de una celda
+		condicion = c1.puedeIngresar(this);// Si no tiene pieza
+		if (condicion) {
+			listaCelda.add(c1);// Se puede agregar a la lista
+		}
+		return listaCelda;
 	}
 	@Override
 	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {

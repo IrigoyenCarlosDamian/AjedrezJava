@@ -48,7 +48,9 @@ public class Tablero {
 	public String toString() {
 		// return "Tablero [celda=" + Arrays.toString(celda) + "]";
 		for (int i = 0; i < 8; i++) {
+			System.out.println("----------------------------------------------------------"+"\t");
 			for (int j = 0; j < 8; j++) {
+				
 				if (this.celda[i][j].getPieza() != null) {
 					System.out.print(this.getCelda(i, j).getPieza() + "\t");
 
@@ -56,7 +58,9 @@ public class Tablero {
 
 			}
 			System.out.println("\n");
+		
 		}
+		System.out.println("----------------------------------------------------------"+"\t");
 		return String.format("");
 	}
 

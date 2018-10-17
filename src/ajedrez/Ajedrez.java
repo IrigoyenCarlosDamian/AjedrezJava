@@ -58,6 +58,12 @@ public class Ajedrez {
 			uAjedrez.mostrarTablero(tablero);
 		}
 		
+		public Tablero getTablero() {
+			return this.tablero;
+		}
+		
+			
+		
 	/*Doy Los Turnos A los equipos*/
 	/**
 	 * Antes de comenzar el juego lo debo de iniciar
