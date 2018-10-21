@@ -14,45 +14,60 @@ public class Equipo {
 	
 	/*Construcotres*/
 	public Equipo(String nombre) {
-		
+		this.ajedrez= ajedrez.getInstancia();
 		this.nombre=nombre;
 		this.piezas=new ArrayList<Pieza>();
 		
 	}
 	
-	/*Metodos*/
-	/*en esta primera instancia devolvemos un mnovimiento cualquiera de todos los disponibles  para una pieza dada*/
-	//TODO[a  futuro ver de mejorar esta implementacion   ]
-	 public Jugada jugar() {
-		ArrayList<Jugada> jugadas = this.calcularJugadsPosibles();
-		Random random = new Random(); // Instanciamos la clase Random
-		int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y  la cantidad de movimientos posibles
-		return jugadas.get(movimientoRandom); // devuelvo la jugada;
-	}
-	 	
 	
 	public Pieza getRey() {
-		int j=-1;
+		int j=0;
 		for(int i=0;i<this.piezas.size(); i++) {
 			if (piezas.get(i) instanceof Rey) {
-				j=j++;
-				i=this.piezas.size();
+				j=i;
+				break;
 			}
 		}
 		return piezas.get(j);
 	}
+	
+	/*Metodos*/
+	/*en esta primera instancia devolvemos un mnovimiento cualquiera de todos los disponibles  para una pieza dada*/
+	//TODO[a  futuro ver de mejorar esta implementacion   ]
+	/*Metodos*/
+	/*en esta primera instancia devolvemos un mnovimiento cualquiera de todos los disponibles  para una pieza dada*/
+	//TODO[a  futuro ver de mejorar esta implementacion   ]
+	 public Jugada jugar() {
+		 ArrayList<Jugada> jugadas = new ArrayList<Jugada>();
+		 for(Jugada j : this.calcularJugadsPosibles()) {
+			 jugadas.add(j);
+		 }
+		 int i = jugadas.size();
+		 System.out.println(i);
+		 Random random = new Random(); // Instanciamos la clase Random
+		 int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y  la cantidad de movimientos posibles
+		 return jugadas.get(movimientoRandom); // devuelvo la jugada;
+	}
 	/*Retorna las jugadas posibles para una pieza dada (del arraylist)*/
 	public ArrayList<Jugada> calcularJugadsPosibles() {
 		ArrayList<Jugada>jugadasPosibles= new ArrayList<Jugada>();// arraylist con las jugadas para una pieza en particular 
-		for (Pieza pieza : piezas) { // el array list de las piezas de un equipo
-			for(Celda celda:pieza.getMovimientosPosibles()) {
-				jugadasPosibles.add(new Jugada(pieza.getCelda().getPieza(),pieza.getCelda().getFila(),pieza.getCelda().getColumna())); 
-				//agrego las jugadas al arraylist
-			return jugadasPosibles;
-			}		
+		
+		for (Pieza p: piezas) { // el array list de las piezas de un equipo
+			Jugada jugada= new Jugada();
+			for(Celda c : p.getMovimientosPosibles()) {
+				jugada.setPieza(p);
+				jugada.setFila(c.getFila());
+				jugada.setColumna(c.getColumna());
+				jugadasPosibles.add(jugada);
+				
+			}
+			       //   jugadasPosibles=p.getMovimientosPosibles(); // por cada piza calculo sus movimientos posibles y los asigno al ArrayList De Jugdas 
 		}
-		return jugadasPosibles;	
-	}
+		return jugadasPosibles;	           	
+		}
+			
+	
 	/*Geters y Seters*/
 
 	public Ajedrez getAjedrez() {

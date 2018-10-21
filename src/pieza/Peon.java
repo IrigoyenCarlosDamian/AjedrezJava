@@ -11,43 +11,44 @@ public class Peon extends Pieza {
 	
 	/*Constructores*/
 
-	public Peon(Celda celda) {
-		super(celda);
+	public Peon(Celda celda,Equipo equipo) {
+		super(celda,equipo);
 	}
 	
 	/*Metodos*/
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
-		Celda c = this.getCelda();// Coordenada actual de la pieza
 		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
-		boolean condicion = false; // Condicion de celda disponible
 		int f1, f2;
 		if(this.getEquipo().getNombre()=="Blanca") {
-			f2 = 2;
-			f1 = 1;
-		} else {
 			f2 = -2;
 			f1 = -1;
+		} else {
+			f2 = 2;
+			f1 = 1;
 		}
-		Celda c1 = tablero.getCelda(c.getFila() + f2, c.getColumna()); // Me ubico en la celda para dos moviimentos
-		// Si es el primer movimiento
-		if ((c.getFila() == 1) || (c.getFila() == 6)) {// Si es su primer movimiento
-			condicion = c1.puedeIngresar(this); // Si no tiene pieza
-			if (condicion) {
-				listaCelda.add(c1);
+		//Movimiento Normal de a una celda
+		if (validarMovimiento(this.getCelda().getFila() + f1, this.getCelda().getColumna())) {//Validamos que este dentro del tablero
+			if (tablero.getCelda(this.getCelda().getFila() + f1, this.getCelda().getColumna()).puedeIngresar(this)) {//Validamos si puede ingresar la celda
+				listaCelda.add(new Celda(this.getCelda().getFila() + f1, this.getCelda().getColumna()));
 			}
 		}
-		c1 = tablero.getCelda(c.getFila() + f1, c.getColumna()); // Movimiento normal de una celda
-		condicion = c1.puedeIngresar(this);// Si no tiene pieza
-		if (condicion) {
-			listaCelda.add(c1);// Se puede agregar a la lista
+		//Movimiento de Primer Movimiento de a dos celdas
+		if ((this.getCelda().getFila() == 1) || (this.getCelda().getFila()==6)) {//POreguntamos si es su primer movimiento
+			if (validarMovimiento(this.getCelda().getFila() + f2, this.getCelda().getColumna())) {//idem
+				if (tablero.getCelda(this.getCelda().getFila() + f2, this.getCelda().getColumna()).puedeIngresar(this)) {//idem
+					listaCelda.add(new Celda(this.getCelda().getFila() + f2, this.getCelda().getColumna()));
+				}
+			}
 		}
 		return listaCelda;
 	}
+	
+	
 	@Override
 	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {
-			this.getMovimientosPosibles();
+	//		this.getMovimientosPosibles();
 		
 	}
 	@Override
@@ -58,7 +59,7 @@ public class Peon extends Pieza {
 
 	@Override
 	public String toString() {
-		return "P";
+		return super.toString()+"P";
 	}
 	
 

@@ -10,8 +10,8 @@ public class Caballo extends Pieza{
 	
 	/*Constructores*/
 	
-	public Caballo(Celda celda) {
-		super(celda);
+	public Caballo(Celda celda,Equipo equipo) {
+		super(celda,equipo);
 		
 	}
 	/*Metodos*/
@@ -25,18 +25,20 @@ public class Caballo extends Pieza{
 		//Se recorre la porcion de tablero donde se puede desplazar el caballo
 		for (int i = (c.getFila() - 3); i < 6; i++) {
 			for (int j = (c.getColumna() - 3); j < 6; j++) {
-				mov = tablero.getCelda( i, j);//Celda a donde se mueve el caballo
-				filaColumnaDistinta = (c.getColumna() != mov.getColumna() && (c.getFila() != mov.getFila()) ); /* Para que sea un movimiento posible del caballo
-																												* tanto la fila como la columna deben ser
-				 																								* DISINTAS
-				 																								*/ 
-				if (((i+j) == (origen + 1) ) || ((i+j) == (origen - 1) && filaColumnaDistinta)) { //Si es un movimiento aceptable para el caballo
-					if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
-					listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
-				}
-				if (((i+j) == (origen + 3) ) || ((i+j) == (origen - 3))) {//Si es un movimiento aceptable para el caballo
-					if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
-					listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
+				if (!((i<0 || j<0) || (i>7 || j>7))) {//Se fija si esta dentro del tablero1
+					mov = tablero.getCelda( i, j);//Celda a donde se mueve el caballo
+					filaColumnaDistinta = (c.getColumna() != mov.getColumna() && (c.getFila() != mov.getFila()) ); /* Para que sea un movimiento posible del caballo
+																													* tanto la fila como la columna deben ser
+					 																								* DISINTAS
+					 																								*/ 
+					if (((i+j) == (origen + 1) ) || ((i+j) == (origen - 1) && filaColumnaDistinta)) { //Si es un movimiento aceptable para el caballo
+						if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
+						listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
+					}
+					if (((i+j) == (origen + 3) ) || ((i+j) == (origen - 3))) {//Si es un movimiento aceptable para el caballo
+						if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
+						listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
+					}
 				}
 			}
 		}
@@ -57,7 +59,7 @@ public class Caballo extends Pieza{
 
 
 	public String toString() {
-		return("C");
+		return super.toString()+"C";
 	}
 
 	

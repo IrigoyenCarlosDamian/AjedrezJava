@@ -1,33 +1,30 @@
 package pieza;
 
 import java.util.ArrayList;
-
-import ajedrez.Celda;
-import ajedrez.Equipo;
-import ajedrez.Tablero;
-
-/*Constructores*/
+import ajedrez.*;
 
 public class Torre extends Pieza {
-	public Torre() {
-		super();
-	}
-	public Torre(Celda celda) {
-		super(celda);
+
+	
+	/*Constructores*/
+
+
+	public Torre(Celda celda,Equipo equipo) {
+		super(celda,equipo);
 		
 		
 	}
+	
 /*Metodos*/
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();//Celda origen donde esta la pieza actualmente
-		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
-		
-		movimiento(c, tablero, listaCelda, -1, 0); //NORTE
-		movimiento(c, tablero, listaCelda, +1, 0); //SUR
-		movimiento(c, tablero, listaCelda, 0, +1); //ESTE
-		movimiento(c, tablero, listaCelda, 0, -1); //OESTE
+		Tablero tablero= this.getEquipo().getAjedrez().getTablero(); // traemos el tablero 
+		movimiento(c,tablero, listaCelda, -1, 0); //NORTE
+		movimiento(c,tablero, listaCelda, +1, 0); //SUR
+		movimiento(c,tablero, listaCelda, 0, +1); //ESTE
+		movimiento(c,tablero, listaCelda, 0, -1); //OESTE
 		
 		return listaCelda;
 	}
@@ -50,7 +47,7 @@ public class Torre extends Pieza {
 				if (sePuede) {
 					listaCelda.add(mov);
 					//Consultamos si la celda a donde apunta hay un enemigo para comer
-					if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(tablero.getCelda(mov.getFila(), mov.getColumna()).getPieza().getEquipo()))  {
+					if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(this.getEquipo()))  {
 						sePuede = false; //Si hay un enemigo, se para la trayectoria de la torre
 					}
 				}
@@ -77,6 +74,6 @@ public class Torre extends Pieza {
 	}
 
 	public String toString() {
-		return"T";
+		return super.toString()+"T";
 	}
 }

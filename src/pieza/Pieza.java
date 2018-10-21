@@ -2,7 +2,8 @@ package pieza;
 
 
 import java.util.ArrayList;
-
+import ajedrez.Tablero;
+import ajedrez.Ajedrez;
 import ajedrez.Celda;
 import ajedrez.Equipo;
 
@@ -17,7 +18,8 @@ import ajedrez.Equipo;
 	public Pieza() {
 		
 	}
-	public Pieza(Celda celda) {
+	public Pieza(Celda celda, Equipo equipo) {
+		this.equipo=equipo;
 		this.celda=celda;
 		this.estaViva= true;
 	}
@@ -25,18 +27,12 @@ import ajedrez.Equipo;
 	/*Metodos*/
 	public abstract ArrayList<Celda> getMovimientosPosibles();		
 	
-	public void actualizarPosicion(int fila,int columna) {
-	//	this.cleda.setFila(fila);	//aqui tengo que enviar el numero de fila de la celda
-	//	this.cleda.setColumna(columna); //aqui tengo que enviar el numerode
-	}
 	public boolean validarMovimiento (int f, int c) {
-		//Se fija si la celda a donde se apunta esta dentro de las coordenadas de tablero
-		if (f<0 || f>7)		
-			return false;
-		if (c<0 || c>7)
-			return false;
-
-		return true;
+		// devuelve verdadero si el moviemnto corresponde a una celda del tablero 
+		if ((f>=0 && f<=7) && (c>=0 && c<=7)){
+			return true;
+		}		
+		return false;
 	}
 	
 	
@@ -49,13 +45,14 @@ import ajedrez.Equipo;
 		this.celda = celda;
 	}
 
-	public void setEquipo(Equipo equipo) {
-		this.equipo = equipo;
-	}
 	public Equipo getEquipo() {
 		return this.equipo;
 	}
 
+	public boolean getEstaViva() {
+		return this.estaViva;
+	}
+	
 	public void setEstaViva(boolean estaViva) {
 		this.estaViva = estaViva;
 	}
@@ -64,4 +61,16 @@ import ajedrez.Equipo;
 		this.piezaListener.add(listener);
 		
 	}
+	@Override
+	public String toString() {
+		String s="";
+		if(this.equipo.getNombre()==Ajedrez.BLANCA) {
+			s="B";
+		}
+		else {
+			s="N";
+		}
+		return s;
+	}
+	
 }

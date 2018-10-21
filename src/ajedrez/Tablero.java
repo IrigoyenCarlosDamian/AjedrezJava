@@ -30,6 +30,28 @@ public class Tablero {
 
 	public void mover(Pieza pieza, int fila, int columna) {
 
+		//if (pieza instanceof Peon) {
+			/* Esto se puede hacer si la jugada es posible
+			 * 
+			 * */
+			this.celda[pieza.getCelda().getFila()][pieza.getCelda().getColumna()].setPieza(null);// se elimina la pieza de la celda
+			pieza.setCleda(this.celda[fila][columna]);
+			this.celda[fila][columna].setPieza(pieza);// Se coloca la pieza que se manda por parametro
+			
+			
+			/*
+			 * pieza.getCelda().setFila(fila);// Se relaciona la celda de la pieza con la fila actual
+			
+			pieza.getCelda().setColumna(columna);// Se relaciona la celda de la pieza con la columna actual
+			 * */
+			
+			
+
+		/*
+		 * Primero tenemos que borrar la pieza de su celda de origen Despues colocar la
+		 * pieza en el destino
+		 */
+
 	}
 
 	public ArrayList<Pieza> quienesMatan(Pieza pieza) {
@@ -46,14 +68,15 @@ public class Tablero {
 
 	@Override
 	public String toString() {
-		// return "Tablero [celda=" + Arrays.toString(celda) + "]";
 		for (int i = 0; i < 8; i++) {
 			System.out.println("----------------------------------------------------------"+"\t");
 			for (int j = 0; j < 8; j++) {
 				
 				if (this.celda[i][j].getPieza() != null) {
-					System.out.print(this.getCelda(i, j).getPieza() + "\t");
+					System.out.print(this.celda[i][j].getPieza() + "\t");
 
+				}else {
+					System.out.print(" "+ "\t");
 				}
 
 			}

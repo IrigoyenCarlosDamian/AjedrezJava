@@ -8,8 +8,8 @@ import ajedrez.Tablero;
 
 public class Alfil extends Pieza {
 	
-	public Alfil(Celda celda) {
-		super(celda);
+	public Alfil(Celda celda,Equipo equipo) {
+		super(celda,equipo);
 	}
 	/*Metodos*/
 	@Override
@@ -56,7 +56,7 @@ public class Alfil extends Pieza {
 				if (sePuede) {
 					listaCelda.add(mov);
 					//Consultamos si la celda a donde apunta hay un enemigo para comer
-					if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(tablero.getCelda(mov.getFila(), mov.getColumna()).getPieza().getEquipo()))  {
+					if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(this.getEquipo()))  {
 						sePuede = false; //Si hay un enemigo, se para la trayectoria de la torre
 					}
 				}
@@ -68,7 +68,7 @@ public class Alfil extends Pieza {
 	
 
 	public String toString() {
-		return("A");
+		return super.toString()+"A";
 	}
 
 }

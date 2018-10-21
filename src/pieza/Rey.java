@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import ajedrez.Celda;
 import ajedrez.Equipo;
+import ajedrez.Tablero;
 
 public class Rey extends Pieza {
-	private boolean estaVivo;
+
 	
-	public Rey(Celda celda) {
-		super(celda);
-		this.estaVivo=true;
+	public Rey(Celda celda,Equipo equipo) {
+		super(celda,equipo);
+
 	}
 
 	@Override
@@ -27,14 +28,15 @@ public class Rey extends Pieza {
 
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
+		return listaCelda;
 	}
 	
 	public String toString() {
-		return("R");
+		return super.toString()+"R";
 	}
-	
+
+
 	/*Geters y Seters*/
 	
 
