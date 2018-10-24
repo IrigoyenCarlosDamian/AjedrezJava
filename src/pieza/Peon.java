@@ -1,5 +1,6 @@
 package pieza;
 
+import excepciones.*;
 import java.util.ArrayList;
 
 import ajedrez.*;
