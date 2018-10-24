@@ -1,6 +1,9 @@
 package ajedrez;
 
+
+import excepciones.*;
 import pieza.Pieza;
+
 
 public class Celda {
 	private int fila;
@@ -24,10 +27,8 @@ public class Celda {
 		try {
 			if (this.getPieza().getEquipo().getNombre() != pieza.getEquipo().getNombre()) {
 				throw new PiezaEnemigaException();
-				return true;
 			}else {	
-				return new PiezaAliadaException();
-				return false;
+				throw new PiezaAliadaException();
 			}
 		} catch (NullPointerException noHayPieza) {
 			return true;
