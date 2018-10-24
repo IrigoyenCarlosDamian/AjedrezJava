@@ -19,32 +19,48 @@ public class Peon extends Pieza {
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
-		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
-		int f1, f2;
+		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
+		Tablero tablero = super.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		Celda mov = new Celda(0, 0);//Celda a la que se mueve el Peon
+		int avance1, avance2;
 		if(this.getEquipo().getNombre()=="Blanca") {
-			f2 = -2;
-			f1 = -1;
+			avance2= -2;
+			avance1 = -1;
 		} else {
-			f2 = 2;
-			f1 = 1;
+			avance2 = 2;
+			avance1 = 1;
 		}
-		//Movimiento Normal de a una celda
-		if (validarMovimiento(this.getCelda().getFila() + f1, this.getCelda().getColumna())) {//Validamos que este dentro del tablero
-			if (tablero.getCelda(this.getCelda().getFila() + f1, this.getCelda().getColumna()).puedeIngresar(this)) {//Validamos si puede ingresar la celda
-				listaCelda.add(new Celda(this.getCelda().getFila() + f1, this.getCelda().getColumna()));
-			}
-		}
-		//Movimiento de Primer Movimiento de a dos celdas
-		if ((this.getCelda().getFila() == 1) || (this.getCelda().getFila()==6)) {//POreguntamos si es su primer movimiento
-			if (validarMovimiento(this.getCelda().getFila() + f2, this.getCelda().getColumna())) {//idem
-				if (tablero.getCelda(this.getCelda().getFila() + f2, this.getCelda().getColumna()).puedeIngresar(this)) {//idem
-					listaCelda.add(new Celda(this.getCelda().getFila() + f2, this.getCelda().getColumna()));
+		//Movimiento Normal de a una celda		
+		if (validarMovimiento(c.getFila() + avance1, c.getColumna())) {//Validamos que este dentro del tablero
+			mov = tablero.getCelda(c.getFila() + avance1, c.getColumna());// Celda a donde se avanza
+			if (mov.puedeIngresar(this)) {//Validamos si puede ingresar la celda
+				listaCelda.add(mov);
+				if ((primerMovimientoPeon())) {//POreguntamos si es su primer movimiento
+					if (validarMovimiento(c.getFila() + avance2, c.getColumna())) {//idem
+						mov = tablero.getCelda(c.getFila() + avance2, c.getColumna());// Celda a donde se avanza
+						if (mov.puedeIngresar(this)) {//idem
+							listaCelda.add(mov);
+						}
+					}
 				}
 			}
 		}
+		
 		return listaCelda;
 	}
 	
+	public boolean primerMovimientoPeon () {
+		/* Consulta si es el primer movimiento del peon 
+		 * */
+		if(this.getEquipo().getNombre() == Ajedrez.BLANCA) {
+			if(this.getCelda().getFila() == 6) 
+				return true;
+		} else {
+			if(this.getCelda().getFila() == 1) 
+				return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {

@@ -19,28 +19,39 @@ public class Caballo extends Pieza{
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();//Celda origen donde esta la pieza actualmente
 		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
-		Celda mov = new Celda(c.getFila(), c.getColumna()); //Celda destinada a los posibles movimientos del caballo
+
+		Celda mov = new Celda(0,0); //Celda destinada a los posibles movimientos del caballo
 		int origen = c.getColumna() + c.getFila(); //Sumatoria de las coordenadas origen de la celda
 		boolean filaColumnaDistinta;
 		//Se recorre la porcion de tablero donde se puede desplazar el caballo
-		for (int i = (c.getFila() - 3); i < 6; i++) {
-			for (int j = (c.getColumna() - 3); j < 6; j++) {
-				if (!((i<0 || j<0) || (i>7 || j>7))) {//Se fija si esta dentro del tablero1
-					mov = tablero.getCelda( i, j);//Celda a donde se mueve el caballo
-					filaColumnaDistinta = (c.getColumna() != mov.getColumna() && (c.getFila() != mov.getFila()) ); /* Para que sea un movimiento posible del caballo
-																													* tanto la fila como la columna deben ser
-					 																								* DISINTAS
-					 																								*/ 
-					if (((i+j) == (origen + 1) ) || ((i+j) == (origen - 1) && filaColumnaDistinta)) { //Si es un movimiento aceptable para el caballo
-						if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
-						listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
-					}
-					if (((i+j) == (origen + 3) ) || ((i+j) == (origen - 3))) {//Si es un movimiento aceptable para el caballo
-						if(super.validarMovimiento(mov.getFila(), mov.getColumna()) && mov.puedeIngresar(this))
-						listaCelda.add(mov); //Si esta dentro del tablero y se pude ingresar se enlista
-					}
+		int j =2;
+		for (int i = 1; i < 3; i++) {
+			if (validarMovimiento(c.getFila() + i, c.getColumna() + j)) {//Si esta dentro del tablero
+				mov = tablero.getCelda(c.getFila() + i, c.getColumna() + j);
+				if (mov.puedeIngresar(this)) {
+					
+					listaCelda.add(mov);
+				}	
+			}
+			if (validarMovimiento(c.getFila() - i, c.getColumna() - j)) {//Si esta dentro del tablero
+				mov = tablero.getCelda(c.getFila() - i, c.getColumna() - j);
+				if (mov.puedeIngresar(this)) {
+					listaCelda.add(mov);
 				}
 			}
+			if (validarMovimiento(c.getFila() - j, c.getColumna() + i)) {//Si esta dentro del tablero
+				mov = tablero.getCelda(c.getFila() - j, c.getColumna() + i);
+				if (mov.puedeIngresar(this)) {
+					listaCelda.add(mov);
+				}
+			}
+			if (validarMovimiento(c.getFila() + j, c.getColumna() - i)) {//Si esta dentro del tablero
+				mov = tablero.getCelda(c.getFila() + j, c.getColumna() - i);
+				if (mov.puedeIngresar(this)) {
+					listaCelda.add(mov);
+				}
+			}
+			j--;
 		}
 		return listaCelda;
 	}
