@@ -59,16 +59,26 @@ public class Dama extends Pieza {
 				sePuede = mov.puedeIngresar(this);//Controla si puede avanzar a esa celda
 				if (sePuede) {
 					listaCelda.add(mov);
-					//Consultamos si la celda a donde apunta hay un enemigo para comer
-					if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(this.getEquipo()))  {
-						sePuede = false; //Si hay un enemigo, se para la trayectoria de la torre
+					if(tablero.getCelda(c.getFila() + fila, c.getColumna() + columna).getPieza() != null) {
+						//Consultamos si la celda a donde apunta hay un enemigo para comer
+						if (tablero.getCelda(mov.getFila(), mov.getColumna()).estaOcupadaEquipoContrario(this.getEquipo()))  {
+							sePuede = false; //Si hay un enemigo, se para la trayectoria de la torre
+						}
 					}
 				}
 			}
 			if (columna != 0) 
-				columna = columna + columna;
+				if (columna < 0) {
+					columna--;
+				}else {
+					columna++;
+				}
 			if (fila != 0)
-				fila = fila + fila;
+				if (fila < 0) {
+					fila--;
+				} else {
+					fila++;
+				}
 		}
 	}
 	

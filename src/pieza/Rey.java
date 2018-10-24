@@ -29,6 +29,18 @@ public class Rey extends Pieza {
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
+		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		Celda mov = new Celda(0,0);
+		for (int i = this.getCelda().getFila()-1; i < this.getCelda().getFila()+2; i++) {
+			for (int j = this.getCelda().getColumna()-1; j < this.getCelda().getColumna()+2; j++) {
+				if (validarMovimiento(i, j)) {
+					mov = tablero.getCelda(i,j);
+					if (mov.puedeIngresar(this)) {
+						listaCelda.add(mov);
+					}
+				}
+			}
+		}
 		return listaCelda;
 	}
 	
