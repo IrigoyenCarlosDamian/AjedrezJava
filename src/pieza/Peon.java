@@ -13,6 +13,7 @@ public class Peon extends Pieza {
 
 	public Peon(Celda celda, Equipo equipo) {
 		super(celda, equipo);
+		super.setPuntos(1);
 	}
 
 	/* Metodos */
@@ -20,93 +21,99 @@ public class Peon extends Pieza {
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		boolean sePuede = true;
+		Equipo blancas = new Equipo("Blanca");
 		Tablero tablero = super.getEquipo().getAjedrez().getTablero();// Tramos al tablero
 		Celda celdaActual = this.getCelda();// Celda origen donde esta la pieza actualmente
 		Celda mov = new Celda(0, 0);// Celda a la que se mueve el Peon
 		int movimientoNormal, primerMovimiento;
-		if (this.getEquipo().getNombre() == "Blanca") {
+		if (this.getEquipo().equals(blancas)) {
 			primerMovimiento = -2;
 			movimientoNormal = -1;
 		} else {
 			primerMovimiento = 2;
 			movimientoNormal = 1;
 		}
-		// Movimiento Normal de a una celda
-		mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna());
-		try {
-			if (mov.puedeIngresar(this)) {
-				listaCelda.add(mov);
-			}
-		} catch (PiezaAliadaException e) {// No puede ingresar
-			System.out.println("Pieza aliada en celda no se puede ingresar");
-			sePuede = false;
 
-		} catch (PiezaEnemigaException e) {
-			System.out.println("Pieza enemiga en celda no se puede ingresar");
-			sePuede = false;
-		}
-		// Movimiento de a 2 celdas
-		if (sePuede) {
-			mov = tablero.getCelda(celdaActual.getFila() + primerMovimiento, celdaActual.getColumna());
+		// Movimiento Normal de a una celda
+		try {
+			mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna());
 			try {
 				if (mov.puedeIngresar(this)) {
 					listaCelda.add(mov);
 				}
 			} catch (PiezaAliadaException e) {// No puede ingresar
-				System.out.println("Pieza aliada en celda no se puede ingresar");
+				// System.out.println("Pieza aliada en celda no se puede ingresar");
+				sePuede = false;
 
 			} catch (PiezaEnemigaException e) {
-				System.out.println("Pieza enemiga en celda no se puede ingresar");
+				// System.out.println("Pieza enemiga en celda no se puede ingresar");
+				sePuede = false;
 			}
+		} catch (FueraDeTableroException e) {
+			sePuede = false;
 		}
+
+		// Movimiento de a 2 celdas
+		try {
+			if (sePuede) {
+				mov = tablero.getCelda(celdaActual.getFila() + primerMovimiento, celdaActual.getColumna());
+				try {
+					if (mov.puedeIngresar(this)) {//Celda vacia
+						listaCelda.add(mov);
+					}
+				} catch (PiezaAliadaException e) {// No puede ingresar
+					// System.out.println("Pieza aliada en celda no se puede ingresar");
+
+				} catch (PiezaEnemigaException e) {
+					// System.out.println("Pieza enemiga en celda no se puede ingresar");
+				}
+			}
+		} catch (FueraDeTableroException e) {
+		}
+
 		// Movimiento para comer a la DERECHA
-		mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna() + 1);
 		try {
-			if (mov.puedeIngresar(this)) {
-				System.out.println("No hay enemigo");
-			}
-		} catch (PiezaAliadaException e) {// No puede ingresar
-			System.out.println("Pieza aliada en celda no se puede ingresar");
+			mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna() + 1);
+			try {
+				if (mov.puedeIngresar(this)) {//Celda vacia
+					// System.out.println("No hay enemigo");
+				}
+			} catch (PiezaAliadaException e) {// No puede ingresar
+				// System.out.println("Pieza aliada en celda no se puede ingresar");
 
-		} catch (PiezaEnemigaException e) {
-			listaCelda.add(mov);
+			} catch (PiezaEnemigaException e) {
+
+				this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con Prioridad
+
+				listaCelda.add(mov);
+			}
+
+		} catch (FueraDeTableroException e) {
 		}
-		
+
 		// Movimiento para comer a la IZQUIERDA
-		mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna() - 1);
 		try {
-			if (mov.puedeIngresar(this)) {
-				System.out.println("No hay enemigo");
+			mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna() - 1);
+			try {
+				if (mov.puedeIngresar(this)) {
+					// System.out.println("No hay enemigo");
+				}
+			} catch (PiezaAliadaException e) {// No puede ingresar
+				// System.out.println("Pieza aliada en celda no se puede ingresar");
+
+			} catch (PiezaEnemigaException e) {
+
+				this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
+																					// Prioridad
+
+				listaCelda.add(mov);
 			}
-		} catch (PiezaAliadaException e) {// No puede ingresar
-			System.out.println("Pieza aliada en celda no se puede ingresar");
 
-		} catch (PiezaEnemigaException e) {
-			listaCelda.add(mov);
+		} catch (FueraDeTableroException e) {
+			// TODO: handle exception
 		}
-		
-
-		/*
-		 * Excepciones: validarMovimiento Se puede intercambiar por una Exception
-		 * 
-		 * 
-		 */
 
 		return listaCelda;
-	}
-
-	public boolean primerMovimientoPeon() {
-		/*
-		 * Consulta si es el primer movimiento del peon
-		 */
-		if (this.getEquipo().getNombre() == Ajedrez.BLANCA) {
-			if (this.getCelda().getFila() == 6)
-				return true;
-		} else {
-			if (this.getCelda().getFila() == 1)
-				return true;
-		}
-		return false;
 	}
 
 	@Override

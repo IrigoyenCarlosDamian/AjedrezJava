@@ -1,9 +1,7 @@
 package ajedrez;
 
-
 import excepciones.*;
 import pieza.Pieza;
-
 
 public class Celda {
 	private int fila;
@@ -18,21 +16,22 @@ public class Celda {
 
 	/* Metodos */
 	public boolean puedeIngresar(Pieza pieza) throws PiezaAliadaException, PiezaEnemigaException {
- 		/* La pieza puede ingresar a la celda?
- 		 * no hay pieza lanza 
- 		 * si hay pieza enemiga lanza
- 		 * si hay pieza aliada lanza
-		 * */
-		
+		/*
+		 * La pieza puede ingresar a la celda? no hay pieza devuelve un TRUE si hay
+		 * pieza enemiga lanza PiezaEneigaException si hay pieza aliada lanza
+		 * PiezaAliadaException
+		 */
+
 		try {
 			if (this.getPieza().getEquipo().getNombre() != pieza.getEquipo().getNombre()) {
 				throw new PiezaEnemigaException();
-			}else {	
+			} else {
 				throw new PiezaAliadaException();
 			}
-		} catch (NullPointerException noHayPieza) {
+		} catch (NullPointerException e) {
 			return true;
 		}
+
 	}
 
 	public boolean estaOcupadaEquipoContrario(Equipo equipo) {
@@ -42,11 +41,10 @@ public class Celda {
 		 * devuelve un false
 		 */
 
-		if (this.getPieza() != null) {
-			if (equipo.getNombre() != this.getPieza().getEquipo().getNombre()) {
-				return true;
-			}
+		if (equipo.getNombre() != this.getPieza().getEquipo().getNombre()) {
+			return true;
 		}
+
 		return false;
 	}
 

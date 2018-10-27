@@ -10,6 +10,7 @@ public abstract class Pieza implements IPieza {
 	private Celda celda;
 	private Equipo equipo;
 	private boolean estaViva;
+	private int puntos;
 	private ArrayList<IPiezaListener> piezaListener;
 
 	/* Constructores */
@@ -26,15 +27,6 @@ public abstract class Pieza implements IPieza {
 	/* Metodos */
 	public abstract ArrayList<Celda> getMovimientosPosibles();
 
-	public boolean validarMovimiento(int f, int c) {
-		// devuelve verdadero si el moviemnto corresponde a una celda del tablero
-		if ((f >= 0 && f <= 7) && (c >= 0 && c <= 7)) {
-			return true;
-		}
-		return false;
-	}
-
-
 	/* Geters y Seters */
 	public Celda getCelda() {
 		return celda;
@@ -44,6 +36,14 @@ public abstract class Pieza implements IPieza {
 		this.celda = celda;
 	}
 
+	public int getPuntos () {
+		return this.puntos;
+	}
+	
+	public void setPuntos (int ptos) {
+		this.puntos = ptos;
+	}
+	
 	public Equipo getEquipo() {
 		return this.equipo;
 	}

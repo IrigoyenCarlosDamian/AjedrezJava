@@ -11,6 +11,7 @@ import pieza.Torre;
 
 import java.util.Scanner;
 
+import grafica.vTableroJuego;
 import pieza.*;
 
 public class Ajedrez {
@@ -69,6 +70,7 @@ public class Ajedrez {
 	/* Antes de comenzar el juego lo debo de iniciar
 	 */
 		public void comenzar () {
+		//vTableroJuego vista= new vTableroJuego(this.getInstancia());
 		while(!this.esFinJuego(blancas,negras)) {
 			uAjedrez.darTurnos(this.blancas,tablero);
 			Esperar.esprerar();

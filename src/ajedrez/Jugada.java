@@ -8,18 +8,19 @@ public class Jugada {
 	private int fila;
 	private int columna;
 
-	/*Constructores*/
+	/* Constructores */
 	public Jugada() {
-		
+
 	}
+
 	public Jugada(Pieza pieza, int fila, int columna) {
 		this.pieza = pieza;
 		this.fila = fila;
 		this.columna = columna;
 	}
-	/*Geters y Seters*/
+	/* Geters y Seters */
 
-	public Pieza getPieza() {
+	public Pieza getPieza(){
 		return pieza;
 	}
 
@@ -42,7 +43,5 @@ public class Jugada {
 	public void setColumna(int columna) {
 		this.columna = columna;
 	}
-	
-	
-	
+
 }
