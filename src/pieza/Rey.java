@@ -17,22 +17,11 @@ public class Rey extends Pieza {
 		super.setPuntos(15);
 	}
 
-	@Override
-	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void piezaComida(Pieza pieza) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
-		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		Tablero tablero = getTablero();// Tramos al tablero
 		Celda mov = new Celda(0, 0);
 		for (int i = this.getCelda().getFila() - 1; i < this.getCelda().getFila() + 2; i++) {
 			for (int j = this.getCelda().getColumna() - 1; j < this.getCelda().getColumna() + 2; j++) {

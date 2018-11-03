@@ -1,12 +1,14 @@
 package ajedrez;
 
 import excepciones.*;
+import interfaces.IPiezaListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import pieza.*;
 
-public class Tablero {
+public class Tablero{
 
 	public Celda[][] celda;
 
@@ -16,6 +18,10 @@ public class Tablero {
 	}
 
 	public void crear() {
+		/*
+		 * Se crea el tablero con sus celdas 
+		 * 
+		 */
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Celda c = new Celda(i, j);
@@ -41,7 +47,6 @@ public class Tablero {
 
 		if (this.celda[fila][columna].getPieza() != null) {
 			this.celda[fila][columna].getPieza().setEstaViva(false);// Se mata la pieza
-			
 		}
 
 		this.celda[pieza.getCelda().getFila()][pieza.getCelda().getColumna()].setPieza(null);// se elimina la pieza de
@@ -68,6 +73,7 @@ public class Tablero {
 		for (int i = 0; i < 8; i++) {
 			System.out.println("----------------------------------------------------------" + "\t");
 			for (int j = 0; j < 8; j++) {
+
 				if (this.celda[i][j].getPieza() != null) {
 					System.out.print(this.celda[i][j].getPieza() + "\t");
 				} else {
@@ -80,4 +86,6 @@ public class Tablero {
 		System.out.println("----------------------------------------------------------" + "\t");
 		return String.format("");
 	}
+
+
 }

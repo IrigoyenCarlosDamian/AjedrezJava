@@ -19,7 +19,7 @@ public class Equipo {
 
 	/* Construcotres */
 	public Equipo(String nombre) {
-		this.ajedrez = ajedrez.getInstancia();
+		this.ajedrez = ajedrez.getSingletoneInstancia();
 		this.nombre = nombre;
 		this.piezas = new ArrayList<Pieza>();
 

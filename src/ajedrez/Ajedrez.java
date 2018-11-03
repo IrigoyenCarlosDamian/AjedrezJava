@@ -1,95 +1,192 @@
 package ajedrez;
 
+import grafica.TableroGui;
+import grafica.TableroGui.*;
+import interfaces.IPiezaListener;
 import util.Esperar;
-import util.uAjedrez;
-import pieza.Alfil;
-import pieza.Caballo;
-import pieza.Dama;
-import pieza.Peon;
-import pieza.Rey;
-import pieza.Torre;
 
 import java.util.Scanner;
 
-import grafica.vTableroJuego;
+import javax.swing.JOptionPane;
+
+import excepciones.FueraDeTableroException;
+//import grafica.vTableroJuego;
 import pieza.*;
 
 public class Ajedrez {
-	public static final String BLANCA ="Blanca";
+	public static final String BLANCA = "Blanca";
 	public static final String NEGRA = "Negra";
-	private Tablero tablero; 
+	private static Ajedrez ajedrez;
+	private Tablero tablero;
+	private TableroGui tableroGui;
 	private Equipo blancas;
 	private Equipo negras;
-	private static Ajedrez instancia = new Ajedrez();// singletone 
-/*Geters y Seters*/
+	private static Ajedrez instancia = new Ajedrez();// singletone
+	/* Geters y Seters */
+
 	private Ajedrez() {
-		
+
 	}
+
+	public static Ajedrez getSingletoneInstancia() {
 	
-	public static Ajedrez getInstancia() {
 		return instancia;
 	}
+
 	public void inicarJuego() {
-		/**
+		/**xº
 		 * @author carlos
-		 * @param
-		 * Inicializa El tablero, se crea el tablero y los equipos
+		 * @param Inicializa El tablero, se crea el tablero y los equipos
 		 * 
 		 */
-		//Tablero tablero= new Tablero();
-		this.tablero= new Tablero();
+		// Tablero tablero= new Tablero();
+		this.tablero = new Tablero();
+		this.blancas = new Equipo(BLANCA);
+		this.negras = new Equipo(NEGRA);
+		this.tableroGui = new TableroGui();
 		this.tablero.crear();
-		this.blancas= new Equipo(BLANCA); 
-		this.crearPiezas(this.blancas);
-		this.negras= new Equipo(NEGRA);
-		this.crearPiezas(this.negras);
-		this.mostrarTablero();
+		try {
+			crearPiezasEnTablero();
+		} catch (FueraDeTableroException e) {
+			// TODO: handle exception
+		}
+		mostrarTablero();
+
 	}
-	
-	private void crearPiezas(Equipo equipo) {
-		/*defino las celdas con sus piezas y a las piezas les defino una celda inicial*/
-		if (equipo.getNombre()==BLANCA) {
-			uAjedrez.crearPiezasBlancas(this.tablero,equipo);
-			
-		} else {
-			uAjedrez.crearPiezasNegras(this.tablero,equipo);
-			
-		}
-	
-		}
-		public void mostrarTablero() {
-			uAjedrez.mostrarTablero(this.tablero);
-		}
+
+	public void darTurnos(Equipo equipo, Tablero tablero) throws FueraDeTableroException {
+
+		Jugada jugada = equipo.jugar();
+		Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no
+																			// deberia salir del tablero
 		
-		public Tablero getTablero() {
-			return this.tablero;
-		}
-		
-				
-	/*Doy Los Turnos A los equipos*/
-	/* Antes de comenzar el juego lo debo de iniciar
+		tablero.mover(jugada.getPieza(), jugada.getFila(), jugada.getColumna());
+		// System.out.println("Turno Del Equipo: "+equipo.getNombre());
+		mostrarTablero();
+	}
+
+	public void mostrarTablero() {
+
+		System.out.print(this.tablero);
+
+	}
+
+
+
+	
+
+	/* Doy Los Turnos A los equipos */
+	/*
+	 * Antes de comenzar el juego lo debo de iniciar
 	 */
-		public void comenzar () {
-		//vTableroJuego vista= new vTableroJuego(this.getInstancia());
-		while(!this.esFinJuego(blancas,negras)) {
-			uAjedrez.darTurnos(this.blancas,tablero);
+	public void comenzar() throws FueraDeTableroException {
+		// vTableroJuego vista= new vTableroJuego(this.getInstancia());
+		
+		while (!this.esFinJuego(blancas, negras)) {
+			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			Esperar.esprerar();
-			if (!this.esFinJuego(negras,blancas)) {
-				uAjedrez.darTurnos(this.negras,tablero);
+			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
+				darTurnos(this.negras, tablero);
 				Esperar.esprerar();
 			}
 		}
+		if (blancas.getRey().getEstaViva()) {
+			JOptionPane.showMessageDialog(null, "GANO EL EQUPO BLANCO");
+		} else {
+			JOptionPane.showMessageDialog(null, "GANO EL EQUIPO NEGRO");
+		}
+		
 	}
 
-	
-
 	private boolean esFinJuego(Equipo equipo1, Equipo equipo2) {
-		
-		
+
 		if ((equipo1.getRey().getEstaViva()) && (equipo2.getRey().getEstaViva())) {
 			return false;
 		}
 		return true;
 	}
+
+	
+	//VER SI SE DEBE SACAR METODO
+	public Tablero getTablero() {
+		return this.tablero;
+	}
+	
+	private void crearPiezasEnTablero() throws FueraDeTableroException {
+
+		Pieza p = null;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Celda c = this.tablero.getCelda(i, j);// FueraDeTabero
+				// Se agregan las piezas
+
+				if (j == 0 || j == 7) {// Torres
+					if (i == 0) {// Negras
+						c.setPieza(p = new Torre(c, negras));
+					}
+					if (i == 7) {// Blancas
+						c.setPieza(p = new Torre(c, blancas));
+					}
+				}
+				if (j == 1 || j == 6) {// Caballos
+					if (i == 0) {// Negras
+						c.setPieza(p = new Caballo(c, negras));
+					}
+					if (i == 7) {// Blancas
+						c.setPieza(p = new Caballo(c, blancas));
+					}
+				}
+				if (j == 2 || j == 5) {// Alfles
+					if (i == 0) {// Negras
+
+						c.setPieza(p = new Alfil(c, negras));
+					}
+					if (i == 7) {// Blancas
+						c.setPieza(p = new Alfil(c, blancas));
+					}
+				}
+				if (j == 3) {// Reyes
+					if (i == 0) {// Negras
+						c.setPieza(p = new Rey(c, negras));
+					}
+					if (i == 7) {// Blancas
+						c.setPieza(p = new Rey(c, blancas));
+					}
+				}
+				if (j == 4) {// Damas
+					if (i == 0) {// Negras
+						c.setPieza(p = new Dama(c, negras));
+					}
+					if (i == 7) {// Blancas
+						c.setPieza(p = new Dama(c, blancas));
+					}
+				}
 				
-	} 
+				if (i == 1) { // Peones Negros
+					c.setPieza(p = new Peon(c, negras));
+				}
+				if (i == 6) {// Peones Blancos
+					c.setPieza(p = new Peon(c, blancas));
+				}
+				
+				if (1 < i && i < 6) {
+					p = null;
+				} else {
+					if (p.getEquipo().equals(blancas)) {
+						blancas.getPiezas().add(p);
+					} else {
+						negras.getPiezas().add(p);
+					}
+					p.addPiezaListener(tableroGui);
+				}
+
+				// Se agrega como escuchador Tablero
+				//p.addPiezaListener(tableroGui);
+
+				this.tablero.celda[i][j].setPieza(p);
+			}
+
+		}
+	}
+	
+}

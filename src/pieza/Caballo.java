@@ -19,11 +19,14 @@ public class Caballo extends Pieza {
 		super.setPuntos(3);
 	}
 
+	
+	
+	
 	/* Metodos */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
-		Tablero tablero = this.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		Tablero tablero = getTablero();// Tramos al tablero
 
 		Celda mov = new Celda(0, 0); // Celda destinada a los posibles movimientos del caballo
 		int origen = c.getColumna() + c.getFila(); // Sumatoria de las coordenadas origen de la celda
@@ -61,17 +64,7 @@ public class Caballo extends Pieza {
 		}
 	}
 
-	@Override
-	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void piezaComida(Pieza pieza) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	public String toString() {
 		return super.toString() + "C";

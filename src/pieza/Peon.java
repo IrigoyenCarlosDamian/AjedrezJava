@@ -22,7 +22,8 @@ public class Peon extends Pieza {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		boolean sePuede = true;
 		Equipo blancas = new Equipo("Blanca");
-		Tablero tablero = super.getEquipo().getAjedrez().getTablero();// Tramos al tablero
+		Tablero tablero = this.getTablero();// Tramos al tablero
+		
 		Celda celdaActual = this.getCelda();// Celda origen donde esta la pieza actualmente
 		Celda mov = new Celda(0, 0);// Celda a la que se mueve el Peon
 		int movimientoNormal, primerMovimiento;
@@ -36,6 +37,7 @@ public class Peon extends Pieza {
 
 		// Movimiento Normal de a una celda
 		try {
+			
 			mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna());
 			try {
 				if (mov.puedeIngresar(this)) {
@@ -116,18 +118,7 @@ public class Peon extends Pieza {
 		return listaCelda;
 	}
 
-	@Override
-	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {
-		// this.getMovimientosPosibles();
-
-	}
-
-	@Override
-	public void piezaComida(Pieza pieza) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public String toString() {
 		return super.toString() + "P";

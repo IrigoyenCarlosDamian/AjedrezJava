@@ -18,7 +18,7 @@ public class Torre extends Pieza {
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
-		Tablero tablero = this.getEquipo().getAjedrez().getTablero(); // traemos el tablero
+		Tablero tablero = getTablero(); // traemos el tablero
 		movimiento(c, tablero, listaCelda, -1, 0); // NORTE
 		movimiento(c, tablero, listaCelda, +1, 0); // SUR
 		movimiento(c, tablero, listaCelda, 0, +1); // ESTE
@@ -74,18 +74,7 @@ public class Torre extends Pieza {
 		}
 	}
 
-	@Override
-	public void piezaMovida(Pieza pieza, Celda celdaOrigen, Celda celdaDestino) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void piezaComida(Pieza pieza) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	public String toString() {
 		return super.toString() + "T";
 	}
