@@ -1,42 +1,30 @@
 package grafica;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.GridBagLayout;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import ajedrez.Celda;
 import interfaces.IPiezaListener;
 import pieza.Pieza;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.io.File;
-import javax.swing.JMenu;
-import javax.swing.*;
 
-public class TableroGui extends JFrame implements IPiezaListener {
+public class TableroGRAFICO extends JPanel implements IPiezaListener {
 
 	private Container contents;// Contenedor de componentes que se emplearan para contruir la interfaz grafica
-								// del tablero
+	// del tablero
 	private JButton[][] cuadrados = new JButton[8][8];
 	private Color negro = Color.gray;
-	private Pieza pieza;
 
-	//private JPanel contentPane;
-	
+//private JPanel contentPane;
 
 	private ImageIcon caballob = new ImageIcon("caballob.png");
 	private ImageIcon caballon = new ImageIcon("caballon.png");
@@ -56,54 +44,25 @@ public class TableroGui extends JFrame implements IPiezaListener {
 	private Icon alfilb = new ImageIcon("alfilb.png");
 	private Icon alfiln = new ImageIcon("alfiln.png");
 
-	
-	//Variables GLOBALES
+//Variables GLOBALES
 	int columna;
 	int fila;
 	boolean segundoClick = false;
 	Icon icono;
 
 	/**
-	 * Launch the application.
+	 * Create the panel.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TableroGui frame = new TableroGui();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public TableroGRAFICO() {
+		// setLayout(new GridLayout(1, 0, 0, 0));
 
-	/**
-	 * Create the frame.
-	 */
-	public TableroGui() {
-
-		JFrame frame = new JFrame();
-		
-		BorderLayout borderLayout = new BorderLayout(); //EN PROCESO
 		GridLayout gridLayout = new GridLayout(8, 8);
-		
-		JPanel panelCentralPosta = new JPanel(gridLayout);//EN PROCESO
 
-		frame.add(panelCentralPosta, BorderLayout.CENTER);//EN PROCESO
-		
-		JMenuBar barra=new JMenuBar();//EN PROCESO
-		JMenuItem comenzar=new JMenuItem("New Game");//EN PROCESO
-		JMenuItem salir=new JMenuItem("Exit");//EN PROCESO
-		
-		barra.add(comenzar);//EN PROCESO
-		barra.add(salir);//EN PROCESO
-		
-		contents = getContentPane();//EN PROCESO
-		
+		contents = this;// EN PROCESO
+
 		contents.setLayout(gridLayout);
-		
+
+		//setLayout(gridLayout);
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -116,25 +75,13 @@ public class TableroGui extends JFrame implements IPiezaListener {
 			}
 		}
 
-		colocarPiezasTablero ();
-		
+		colocarPiezasTablero();
 
-
-		setSize(500, 500);
-		setResizable(false);
-		setLocationRelativeTo(null); // Centra la ventana
+		//setSize(500, 500);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-	
-		// setBounds(100, 100, 450, 300);
-		// contentPane = new JPanel();
-		// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// setContentPane(contentPane);
-		// contentPane.setLayout(new GridLayout(1, 0, 0, 0));
 	}
 
-	public void colocarPiezasTablero () {
+	public void colocarPiezasTablero() {
 		cuadrados[0][0].setIcon(torren);
 		cuadrados[0][1].setIcon(caballon);
 		cuadrados[0][2].setIcon(alfiln);
@@ -161,8 +108,7 @@ public class TableroGui extends JFrame implements IPiezaListener {
 			cuadrados[6][i].setIcon(peonb);
 		}
 	}
-	
-	
+
 	BotonPresionado b = new BotonPresionado();
 
 	private class BotonPresionado implements ActionListener {
@@ -214,8 +160,7 @@ public class TableroGui extends JFrame implements IPiezaListener {
 
 		}
 	}
-
-
+	
 	@Override
 	public void piezaMovida(Pieza p, Celda c1, Celda c2) {
 		
@@ -234,4 +179,5 @@ public class TableroGui extends JFrame implements IPiezaListener {
 		// TODO Auto-generated method stub
 
 	}
+
 }

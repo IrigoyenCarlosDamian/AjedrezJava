@@ -1,7 +1,9 @@
 package ajedrez;
 
-import grafica.TableroGui;
-import grafica.TableroGui.*;
+import grafica.TableroGRAFICO;
+import grafica.VentanaPrincipal;
+//import grafica.TableroGui;
+//import grafica.TableroGui.*;
 import interfaces.IPiezaListener;
 import util.Esperar;
 
@@ -16,9 +18,8 @@ import pieza.*;
 public class Ajedrez {
 	public static final String BLANCA = "Blanca";
 	public static final String NEGRA = "Negra";
-	private static Ajedrez ajedrez;
 	private Tablero tablero;
-	private TableroGui tableroGui;
+	private TableroGRAFICO tableroGui;
 	private Equipo blancas;
 	private Equipo negras;
 	private static Ajedrez instancia = new Ajedrez();// singletone
@@ -43,7 +44,7 @@ public class Ajedrez {
 		this.tablero = new Tablero();
 		this.blancas = new Equipo(BLANCA);
 		this.negras = new Equipo(NEGRA);
-		this.tableroGui = new TableroGui();
+		this.tableroGui = new TableroGRAFICO();
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
@@ -71,21 +72,18 @@ public class Ajedrez {
 
 	}
 
-
-
-	
-
-	/* Doy Los Turnos A los equipos */
-	/*
-	 * Antes de comenzar el juego lo debo de iniciar
-	 */
 	public void comenzar() throws FueraDeTableroException {
 		// vTableroJuego vista= new vTableroJuego(this.getInstancia());
+
+		VentanaPrincipal frame = new VentanaPrincipal();
+		frame.setVisible(true);
 		
 		while (!this.esFinJuego(blancas, negras)) {
+			frame.setTurno(BLANCA);
 			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			Esperar.esprerar();
 			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
+				frame.setTurno(NEGRA);
 				darTurnos(this.negras, tablero);
 				Esperar.esprerar();
 			}
@@ -110,6 +108,10 @@ public class Ajedrez {
 	//VER SI SE DEBE SACAR METODO
 	public Tablero getTablero() {
 		return this.tablero;
+	}
+	
+	public TableroGRAFICO getTableroGui () {
+		return this.tableroGui;
 	}
 	
 	private void crearPiezasEnTablero() throws FueraDeTableroException {
