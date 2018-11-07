@@ -65,7 +65,20 @@ public class Tablero{
 	}
 
 	public void limpiar() {
-		// refresco la pantalla
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Celda c = new Celda(i, j);
+				celda[i][j] = null;
+			}
+		}
+		crear();
+		try {
+			Ajedrez.getSingletoneInstancia().crearPiezasEnTablero();
+		} catch (FueraDeTableroException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

@@ -18,8 +18,10 @@ import pieza.*;
 public class Ajedrez {
 	public static final String BLANCA = "Blanca";
 	public static final String NEGRA = "Negra";
+	private static boolean juegoReiniciado=false;
 	private Tablero tablero;
 	private TableroGRAFICO tableroGui;
+	private VentanaPrincipal frame;
 	private Equipo blancas;
 	private Equipo negras;
 	private static Ajedrez instancia = new Ajedrez();// singletone
@@ -45,6 +47,8 @@ public class Ajedrez {
 		this.blancas = new Equipo(BLANCA);
 		this.negras = new Equipo(NEGRA);
 		this.tableroGui = new TableroGRAFICO();
+		this.frame = new VentanaPrincipal();
+		this.frame.setVisible(true);
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
@@ -73,27 +77,24 @@ public class Ajedrez {
 	}
 
 	public void comenzar() throws FueraDeTableroException {
-		// vTableroJuego vista= new vTableroJuego(this.getInstancia());
-
-		VentanaPrincipal frame = new VentanaPrincipal();
-		frame.setVisible(true);
-		
-		while (!this.esFinJuego(blancas, negras)) {
-			frame.setTurno(BLANCA);
+		// vTableroJuego vista= new vTableroJuego(this.getInstancia());	
+		while (!this.esFinJuego(blancas, negras)&&(Ajedrez.juegoReiniciado==false)) {
+			this.frame.setTurno(BLANCA);
 			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			Esperar.esprerar();
 			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
-				frame.setTurno(NEGRA);
+				this.frame.setTurno(NEGRA);
 				darTurnos(this.negras, tablero);
 				Esperar.esprerar();
 			}
 		}
+		if(Ajedrez.juegoReiniciado==false){
 		if (blancas.getRey().getEstaViva()) {
 			JOptionPane.showMessageDialog(null, "GANO EL EQUPO BLANCO");
 		} else {
 			JOptionPane.showMessageDialog(null, "GANO EL EQUIPO NEGRO");
 		}
-		
+		}
 	}
 
 	private boolean esFinJuego(Equipo equipo1, Equipo equipo2) {
@@ -114,7 +115,7 @@ public class Ajedrez {
 		return this.tableroGui;
 	}
 	
-	private void crearPiezasEnTablero() throws FueraDeTableroException {
+	public void crearPiezasEnTablero() throws FueraDeTableroException {
 
 		Pieza p = null;
 		for (int i = 0; i < 8; i++) {
@@ -179,7 +180,7 @@ public class Ajedrez {
 					} else {
 						negras.getPiezas().add(p);
 					}
-					p.addPiezaListener(tableroGui);
+					p.addPiezaListener(this.tableroGui);
 				}
 
 				// Se agrega como escuchador Tablero
@@ -190,5 +191,12 @@ public class Ajedrez {
 
 		}
 	}
+
+	
+	public static void setJuegoReiniciado(boolean juegoReiniciado) {
+		Ajedrez.juegoReiniciado = juegoReiniciado;
+	}
+	
+	
 	
 }

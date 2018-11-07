@@ -19,12 +19,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 
-public class VentanaPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JLabel turnoEquipo;
@@ -103,6 +105,25 @@ public class VentanaPrincipal extends JFrame {
 		JMenuItem ayudaMenuAcercaDe = new JMenuItem("Acerca de...");
 		ayudaMenu.add(ayudaMenuAcercaDe);
 		
+		//Agrego el action command
+		juegoMenuIniciar.setActionCommand("Iniciar");
+		juegoMenuFinalizar.setActionCommand("Finalizar");
+		juegoMenuReiniciar.setActionCommand("Reinicar");
+		ayudaMenuAcercaDe.setActionCommand("Acerca De");
+				
+		//Agrego el listner a cada boton (quien los va a escuchar)
+		juegoMenuFinalizar.addActionListener(this);
+		juegoMenuReiniciar.addActionListener(this);
+		ayudaMenuAcercaDe.addActionListener(this);
+		juegoMenuIniciar.addActionListener (this);
+		
+		  
+		
+		
+		
+		
+		
+		
 		/*
 		 *
 		 *setBounds(100, 100, 450, 300);
@@ -116,5 +137,42 @@ public class VentanaPrincipal extends JFrame {
 	public void setTurno (String turno) {
 		this.turnoEquipo.setText(turno);
 	}
-
+	  public void actionPerformed (ActionEvent evento)
+	   {
+		  Runnable miRunnable = new Runnable()
+	      {
+	         public void run()
+	         {
+	            try
+	            {
+	            	if (evento.getActionCommand()=="Iniciar") {
+	            		Ajedrez.getSingletoneInstancia().comenzar();
+	            		
+	            	}
+	            	else if(evento.getActionCommand()=="Acerca De"){
+	            		JOptionPane.showMessageDialog(null, "Integrantes: Irigoyen Carlos, Villanueva Alex");
+	            	}
+	            	else if(evento.getActionCommand()=="Reinicar") {
+	            		removeAll();
+	            		Ajedrez.getSingletoneInstancia().setJuegoReiniciado(true);
+	            		Ajedrez.getSingletoneInstancia().getTablero().limpiar();
+	            		Ajedrez.getSingletoneInstancia().inicarJuego();
+	            		
+	            	}else if(evento.getActionCommand()=="Finalizar") {
+	            		System.exit(0);
+	            		
+	            	}
+	              
+	            }
+	            catch (Exception e)
+	            {
+	               e.printStackTrace();
+	            }
+	         }
+	      };
+	      Thread hilo = new Thread (miRunnable);
+	      hilo.start();
+	      
+	   }
+		  
 }
