@@ -30,6 +30,7 @@ public class Tablero{
 
 		}
 	}
+	
 
 	public Celda getCelda(int fila, int columna) throws FueraDeTableroException {
 		try {
@@ -67,20 +68,13 @@ public class Tablero{
 	public void limpiar() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				Celda c = new Celda(i, j);
-				celda[i][j] = null;
+				celda[i][j] =null;
 			}
 		}
-		crear();
-		try {
-			Ajedrez.getSingletoneInstancia().crearPiezasEnTablero();
-		} catch (FueraDeTableroException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	
 	}
-
+		
+		
 	@Override
 	public String toString() {
 		for (int i = 0; i < 8; i++) {

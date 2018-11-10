@@ -71,7 +71,7 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 					cuadrados[i][j].setBackground(negro);
 				}
 				contents.add(cuadrados[i][j]);
-				cuadrados[i][j].addActionListener(b);// Se le agrega la accion tipica de JButton
+				//cuadrados[i][j].addActionListener(b);// Se le agrega la accion tipica de JButto
 			}
 		}
 

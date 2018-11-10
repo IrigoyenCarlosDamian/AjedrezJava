@@ -18,13 +18,14 @@ import pieza.*;
 public class Ajedrez {
 	public static final String BLANCA = "Blanca";
 	public static final String NEGRA = "Negra";
-	private static boolean juegoReiniciado=false;
+	
 	private Tablero tablero;
 	private TableroGRAFICO tableroGui;
 	private VentanaPrincipal frame;
 	private Equipo blancas;
 	private Equipo negras;
 	private static Ajedrez instancia = new Ajedrez();// singletone
+	private  boolean juegoReiniciado;
 	/* Geters y Seters */
 
 	private Ajedrez() {
@@ -36,6 +37,13 @@ public class Ajedrez {
 		return instancia;
 	}
 
+	
+	public void crearTableroGui() {
+		this.tableroGui = new TableroGRAFICO();
+		this.frame = new VentanaPrincipal();
+		this.frame.setVisible(true);
+	}
+	
 	public void inicarJuego() {
 		/**xº
 		 * @author carlos
@@ -43,12 +51,10 @@ public class Ajedrez {
 		 * 
 		 */
 		// Tablero tablero= new Tablero();
+		this.juegoReiniciado=false;
 		this.tablero = new Tablero();
 		this.blancas = new Equipo(BLANCA);
 		this.negras = new Equipo(NEGRA);
-		this.tableroGui = new TableroGRAFICO();
-		this.frame = new VentanaPrincipal();
-		this.frame.setVisible(true);
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
@@ -78,7 +84,7 @@ public class Ajedrez {
 
 	public void comenzar() throws FueraDeTableroException {
 		// vTableroJuego vista= new vTableroJuego(this.getInstancia());	
-		while (!this.esFinJuego(blancas, negras)&&(Ajedrez.juegoReiniciado==false)) {
+		while (!this.esFinJuego(blancas, negras)) {
 			this.frame.setTurno(BLANCA);
 			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			Esperar.esprerar();
@@ -87,19 +93,19 @@ public class Ajedrez {
 				darTurnos(this.negras, tablero);
 				Esperar.esprerar();
 			}
-		}
-		if(Ajedrez.juegoReiniciado==false){
-		if (blancas.getRey().getEstaViva()) {
-			JOptionPane.showMessageDialog(null, "GANO EL EQUPO BLANCO");
-		} else {
-			JOptionPane.showMessageDialog(null, "GANO EL EQUIPO NEGRO");
-		}
-		}
-	}
-
+		}    if (blancas.getRey().getEstaViva()&& this.juegoReiniciado==false) {
+					JOptionPane.showMessageDialog(null, "GANO EL EQUPO BLANCO");
+				} else if(negras.getRey().getEstaViva() &&this.juegoReiniciado==false) {
+					JOptionPane.showMessageDialog(null, "GANO EL EQUIPO NEGRO");
+				}
+				
+				
+	}		
+	
 	private boolean esFinJuego(Equipo equipo1, Equipo equipo2) {
 
-		if ((equipo1.getRey().getEstaViva()) && (equipo2.getRey().getEstaViva())) {
+		if (equipo1.getRey().getEstaViva() && equipo2.getRey().getEstaViva()&& this.juegoReiniciado==false) {
+		
 			return false;
 		}
 		return true;
@@ -190,13 +196,10 @@ public class Ajedrez {
 			}
 
 		}
+		
 	}
 
-	
-	public static void setJuegoReiniciado(boolean juegoReiniciado) {
-		Ajedrez.juegoReiniciado = juegoReiniciado;
+	public void setJuegoReiniciado(boolean juegoReiniciado) {
+		this.juegoReiniciado = juegoReiniciado;
 	}
-	
-	
-	
 }

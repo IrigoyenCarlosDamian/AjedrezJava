@@ -9,9 +9,10 @@ import grafica.VentanaPrincipal;
 
 public class Prueba {
 
-	public static void main(String[] args) throws FueraDeTableroException {
+	public static void main(String[] args)  {
 		Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
-		ajedrez.inicarJuego();
+		ajedrez.crearTableroGui();
+		
 	}
 
 }
