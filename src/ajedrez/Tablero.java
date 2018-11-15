@@ -58,7 +58,24 @@ public class Tablero{
 	}
 
 	public ArrayList<Pieza> quienesMatan(Pieza pieza) {
-		return null; // aqui devuelvo la pieza que matan
+		
+		ArrayList<Pieza> losMatones = new ArrayList<Pieza>();
+		int filaAliada = pieza.getCelda().getFila();
+		int columnaAliada = pieza.getCelda().getColumna();
+		Equipo equipoEnemigo = Ajedrez.getSingletoneInstancia().getEquipoContrario(pieza.getEquipo());
+		
+		for (Pieza piezaEnemiga : equipoEnemigo.getPiezas()) {
+			for (Celda celdaEnemiga : piezaEnemiga.getMovimientosPosibles()) {
+				int filaEnemiga = celdaEnemiga.getFila();
+				int columnaEnemiga = celdaEnemiga.getColumna();
+				if ((filaEnemiga == filaAliada) && (columnaEnemiga == columnaAliada)) {
+					//La piezaEnemiga puede comer a la Aliada
+					losMatones.add(piezaEnemiga);
+				}
+			}
+		}
+		
+		return losMatones; // aqui devuelvo la pieza que matan
 	}
 
 	public void getPieza(Equipo equipo) {

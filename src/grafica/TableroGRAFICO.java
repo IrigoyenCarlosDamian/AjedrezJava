@@ -23,7 +23,7 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 	// del tablero
 	private JButton[][] cuadrados = new JButton[8][8];
 	private Color negro = Color.gray;
-
+	//private Pieza pieza;
 //private JPanel contentPane;
 
 	private ImageIcon caballob = new ImageIcon("caballob.png");
@@ -55,7 +55,6 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 	 */
 	public TableroGRAFICO() {
 		// setLayout(new GridLayout(1, 0, 0, 0));
-
 		GridLayout gridLayout = new GridLayout(8, 8);
 
 		contents = this;// EN PROCESO
@@ -71,9 +70,10 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 					cuadrados[i][j].setBackground(negro);
 				}
 				contents.add(cuadrados[i][j]);
+				
 				//cuadrados[i][j].addActionListener(b);// Se le agrega la accion tipica de JButto
-			}
-		}
+			}											  //esto es unicamente si el modo de juego es maquina vs maquina 
+		}												 // se desactiva  los eventos del mouse en ese modo 				
 
 		colocarPiezasTablero();
 
@@ -178,6 +178,10 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 	public void piezaComida(Pieza p) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void setPieza (Pieza piecitaSignificativa) {
+		piecitaSignificativa.addPiezaListener(this);
 	}
 
 }

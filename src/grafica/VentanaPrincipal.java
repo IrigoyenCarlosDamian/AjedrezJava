@@ -9,8 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ajedrez.Ajedrez;
+import ajedrez.Celda;
+import ajedrez.Equipo;
+import ajedrez.IJuegoListener;
 import ajedrez.Prueba;
 import excepciones.FueraDeTableroException;
+import pieza.Pieza;
 import util.Esperar;
 
 import java.awt.FlowLayout;
@@ -30,32 +34,19 @@ import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 
-public class VentanaPrincipal extends JFrame implements ActionListener {
+public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoListener {
 
 	private JPanel contentPane;
 	private JLabel turnoEquipo;
 	private JPanel panel;
+	private Ajedrez ajedrez;
+	
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaPrincipal frame = new VentanaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+ 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaPrincipal() {
+	public VentanaPrincipal(TableroGRAFICO tablero) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(new Dimension(671, 500));
 		setLocationRelativeTo(null); // Centra la ventana
@@ -81,8 +72,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
-
-		TableroGRAFICO tablero = Ajedrez.getSingletoneInstancia().getTableroGui();
 		getContentPane().add(tablero, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -119,11 +108,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		
 		JMenuItem  personaContraPersona = new JMenuItem("Persona Vs Persona");
 		modoDeJuego.add(personaContraPersona);
-		
-		
-
-		
-		
 
 		// Agrego el action command
 		juegoMenuIniciar.setActionCommand("Iniciar");
@@ -147,6 +131,10 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		 */
 	}
 
+	public void setAjedrez(Ajedrez ajedrez) {
+		
+	}
+	
 	public void setTurno(String turno) {
 		this.turnoEquipo.setText(turno);
 	}
@@ -156,7 +144,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			public void run() {
 				try {
 					if (evento.getActionCommand() == "Iniciar") {
-						Ajedrez.getSingletoneInstancia().inicarJuego();
+				
 						Ajedrez.getSingletoneInstancia().comenzar();
 
 					} else if (evento.getActionCommand() == "Acerca De") {
@@ -183,5 +171,38 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 		hilo.start();
 
 	}
+	public void setVentanaPrincipal(Ajedrez ajedrez) {
+		ajedrez.addJuegoListener(this);
+	}
+
+	@Override
+	public void equipoEnJaque(Equipo equipo) {
+		JOptionPane.showMessageDialog(null,equipo.getNombre()+"esta en jaque");
+	}
+
+	@Override
+	public void turnoActual(Equipo equipo) {
+		//mostrar texto con el equipo que me envian;
+		
+	}
+
+	@Override
+	public void piezaComida(Pieza pieza) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void JuegoIniciado() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void juegoFinalizado() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 }

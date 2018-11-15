@@ -38,8 +38,8 @@ public abstract class Pieza {
 	public Celda getCelda() {
 		return celda;
 	}
-
 	
+
 	
 	public void setCleda(Celda celda) {
 		//Cambio de Estado celda()
