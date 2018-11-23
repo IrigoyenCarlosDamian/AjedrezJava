@@ -6,7 +6,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ajedrez.Ajedrez;
 import ajedrez.Celda;
+import ajedrez.Tablero;
+import excepciones.FueraDeTableroException;
 import interfaces.IPiezaListener;
 import pieza.Pieza;
 
@@ -14,21 +17,25 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-public class TableroGRAFICO extends JPanel implements IPiezaListener {
+/**
+ * Tablero grafico para el juego de ajedrez
+ * @author Carlos
+ *
+ */
+public class TableroGrafico extends JPanel implements IPiezaListener {
 
 	private Container contents;// Contenedor de componentes que se emplearan para contruir la interfaz grafica
 	// del tablero
 	private JButton[][] cuadrados = new JButton[8][8];
 	private Color negro = Color.gray;
-	//private Pieza pieza;
-//private JPanel contentPane;
-
+	
+	/*Defino los inconos de las piezas*/
 	private ImageIcon caballob = new ImageIcon("caballob.png");
 	private ImageIcon caballon = new ImageIcon("caballon.png");
-
+	
 	private Icon peonb = new ImageIcon("peonb.png");
 	private Icon peonn = new ImageIcon("peonn.png");
 
@@ -53,7 +60,7 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 	/**
 	 * Create the panel.
 	 */
-	public TableroGRAFICO() {
+	public TableroGrafico() {
 		// setLayout(new GridLayout(1, 0, 0, 0));
 		GridLayout gridLayout = new GridLayout(8, 8);
 
@@ -71,7 +78,7 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 				}
 				contents.add(cuadrados[i][j]);
 				
-				//cuadrados[i][j].addActionListener(b);// Se le agrega la accion tipica de JButto
+				cuadrados[i][j].addActionListener(b);// Se le agrega la accion tipica de JButto
 			}											  //esto es unicamente si el modo de juego es maquina vs maquina 
 		}												 // se desactiva  los eventos del mouse en ese modo 				
 
@@ -80,6 +87,9 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 		//setSize(500, 500);
 		setVisible(true);
 	}
+	/**
+	 *  setea el icono de la pieza a  los botones del gridlouyt
+	 */
 
 	public void colocarPiezasTablero() {
 		cuadrados[0][0].setIcon(torren);
@@ -111,13 +121,14 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 
 	BotonPresionado b = new BotonPresionado();
 
+	/** Con esta logica el usuario va a presionar dos veces el tablero La primera vez
+		sera sobre la pieza que quiere mover La segunda sera el boton a donde lo
+		quiere mover
+	 * @author Carlos
+	 */
+	
 	private class BotonPresionado implements ActionListener {
-		/*
-		 * Con esta logica el usuario va a presionar dos veces el tablero La primera vez
-		 * sera sobre la pieza que quiere mover La segunda sera el boton a donde lo
-		 * quiere mover
-		 * 
-		 */
+		
 
 		@Override
 		public void actionPerformed(ActionEvent e) { // accion tipica de JButton es ser precionado
@@ -135,13 +146,23 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 
 		}
 
+		/**En el primer click si hay una pieza entra en el segundo if En el segundo
+		 click se mueve la pieza 
+		 * @param i
+		 * @param j
+		 */
 		public void botonApretado(int i, int j) {
-			/*
-			 * En el primer click si hay una pieza entra en el segundo if En el segundo
-			 * click se mueve la pieza
-			 */
-
+		
 			if (segundoClick) {
+				Celda celda;
+				Pieza pieza = null;
+				Tablero tablero = Ajedrez.getSingletoneInstancia().getTablero();
+				
+				try {
+					celda = tablero.getCelda(i, j);
+					pieza = celda.getPieza();
+				} catch (FueraDeTableroException e) {}
+				
 				if ((i != fila) || (j != columna)) {
 					cuadrados[i][j].setIcon(icono);
 					cuadrados[fila][columna].setIcon(null);
@@ -149,6 +170,17 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 					icono = null;
 					return;
 				}
+				
+				/*
+				 if ((i != fila) || (j != columna)) {
+					cuadrados[i][j].setIcon(icono);
+					cuadrados[fila][columna].setIcon(null);
+					segundoClick = false;
+					icono = null;
+					return;
+				}
+				 * */
+				
 			}
 			if (cuadrados[i][j].getIcon() != null) {
 				icono = cuadrados[i][j].getIcon();
@@ -162,6 +194,9 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 	}
 	
 	@Override
+	/**
+	 *  Setea  el icono a un boton dada la celda origne y la celda destino 
+	 */
 	public void piezaMovida(Pieza p, Celda c1, Celda c2) {
 		
 		
@@ -170,14 +205,14 @@ public class TableroGRAFICO extends JPanel implements IPiezaListener {
 		//PORQUE POR ALGO TE MANDAN LA PIEZA SINO NO SE, SINO PIEZA ESTA AL PEDO
 		cuadrados[c2.getFila()][c2.getColumna()].setIcon(iconAux);//agarro el icono
 		cuadrados[c1.getFila()][c1.getColumna()].setIcon(null);//lo muevo
+		VentanaPrincipal.movimientoDePiza(p,c2);
 		return;
 
 	}
 
 	@Override
 	public void piezaComida(Pieza p) {
-		// TODO Auto-generated method stub
-
+		VentanaPrincipal.mostrarPiezaComida(p);
 	}
 	
 	public void setPieza (Pieza piecitaSignificativa) {

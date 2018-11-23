@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import ajedrez.*;
 
+/**
+ * El peon viene dado por un celda y un equipo
+ * @author Carlos
+ *
+ */
 public class Peon extends Pieza {
-	// private boolean esPrimerMovimiento; podriamos tener una varaible es primer
-	// movimneto y en base a esa preguntamos para hacer la comparacion
-
 	/* Constructores */
 
 	public Peon(Celda celda, Equipo equipo) {
@@ -18,21 +20,26 @@ public class Peon extends Pieza {
 
 	/* Metodos */
 	@Override
+	/**
+	 * Caluclo los movimientos posibles del peon en el turno de su equipo
+	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		boolean sePuede = true;
-		Equipo blancas = new Equipo("Blanca");
+		Equipo blancas= new Equipo(Ajedrez.getSingletoneInstancia().BLANCA);
 		Tablero tablero = this.getTablero();// Tramos al tablero
 		
 		Celda celdaActual = this.getCelda();// Celda origen donde esta la pieza actualmente
 		Celda mov = new Celda(0, 0);// Celda a la que se mueve el Peon
-		int movimientoNormal, primerMovimiento;
+		int movimientoNormal, primerMovimiento,filaInicial;
 		if (this.getEquipo().equals(blancas)) {
 			primerMovimiento = -2;
 			movimientoNormal = -1;
+			filaInicial = 6;
 		} else {
 			primerMovimiento = 2;
 			movimientoNormal = 1;
+			filaInicial = 1;
 		}
 
 		// Movimiento Normal de a una celda
@@ -57,17 +64,19 @@ public class Peon extends Pieza {
 
 		// Movimiento de a 2 celdas
 		try {
-			if (sePuede) {
-				mov = tablero.getCelda(celdaActual.getFila() + primerMovimiento, celdaActual.getColumna());
-				try {
-					if (mov.puedeIngresar(this)) {//Celda vacia
-						listaCelda.add(mov);
-					}
-				} catch (PiezaAliadaException e) {// No puede ingresar
-					// System.out.println("Pieza aliada en celda no se puede ingresar");
+			if (filaInicial == celdaActual.getFila()) {
+				if (sePuede) {
+					mov = tablero.getCelda(celdaActual.getFila() + primerMovimiento, celdaActual.getColumna());
+					try {
+						if (mov.puedeIngresar(this)) {//Celda vacia
+							listaCelda.add(mov);
+						}
+					} catch (PiezaAliadaException e) {// No puede ingresar
+						// System.out.println("Pieza aliada en celda no se puede ingresar");
 
-				} catch (PiezaEnemigaException e) {
-					// System.out.println("Pieza enemiga en celda no se puede ingresar");
+					} catch (PiezaEnemigaException e) {
+						// System.out.println("Pieza enemiga en celda no se puede ingresar");
+					}
 				}
 			}
 		} catch (FueraDeTableroException e) {

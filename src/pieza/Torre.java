@@ -3,7 +3,11 @@ package pieza;
 import excepciones.*;
 import java.util.ArrayList;
 import ajedrez.*;
-
+/**
+ * LA torre viene dada por una celda y una pieza 
+ * @author Carlos
+ *
+ */
 public class Torre extends Pieza {
 
 	/* Constructores */
@@ -15,6 +19,9 @@ public class Torre extends Pieza {
 
 	/* Metodos */
 	@Override
+	/**
+	 * Calcula los movimientos psobile de la torre en el turno de su equipo 
+	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
@@ -26,16 +33,21 @@ public class Torre extends Pieza {
 
 		return listaCelda;
 	}
-
+		
+	/**
+	 * 
+	 * @param c
+	 * @param tablero
+	 * @param listaCelda
+	 * @param fila
+	 * @param columna
+	 *  Se enlistan las celdas posibles segun los movimientos d la torre si en fila
+	    viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
+		culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
+		significa movimiento ESTE si en columna viene un -1 y fila 0 significa
+	    movimiento OESTE
+	 */
 	private void movimiento(Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int fila, int columna) {
-		/*
-		 * Se enlistan las celdas posibles segun los movimientos d la torre si en fila
-		 * viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
-		 * culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
-		 * significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-		 * movimiento OESTE
-		 */
-
 		boolean sePuede = true;
 		Celda mov = new Celda(0, 0);
 		while (sePuede) {

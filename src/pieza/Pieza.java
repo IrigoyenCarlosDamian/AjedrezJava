@@ -6,7 +6,11 @@ import interfaces.IPiezaListener;
 import ajedrez.Ajedrez;
 import ajedrez.Celda;
 import ajedrez.Equipo;
-
+/**
+ * Clase Abstracta  para la jerarquia de las piezas una piesa viene dada por una celda y un equipo
+ * @author Carlos
+ *
+ */
 public abstract class Pieza {
 	private Celda celda;
 	private Equipo equipo;
@@ -71,11 +75,11 @@ public abstract class Pieza {
 		//Cambio de Estado celda()
 		//notificar a los escuchadores()
 		//piezaComida
+		this.estaViva = estaViva;
 		for (IPiezaListener escuchador : piezaListener) {
 			escuchador.piezaComida(this);
 		}
-		this.estaViva = estaViva;
-	}
+			}
 
 	public void removePiezaListener(IPiezaListener listener) {
 		this.piezaListener.remove(listener);

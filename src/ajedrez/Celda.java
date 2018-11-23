@@ -3,6 +3,12 @@ package ajedrez;
 import excepciones.*;
 import pieza.Pieza;
 
+/**
+ * 
+ * @author Carlos
+ * 	La Celda Se crea con una fila y columna fija
+ *  a posterior se le setea la pieza correspondiente 
+ */
 public class Celda {
 	private int fila;
 	private int columna;
@@ -14,7 +20,15 @@ public class Celda {
 		this.columna = columna;
 	}
 
-	/* Metodos */
+	/**
+	 * 
+	 * @param pieza
+	 * @return
+	 * @throws PiezaAliadaException
+	 * @throws PiezaEnemigaException
+	 * Determina si la pieza enviada por parameto puede ingresar a  una celda 
+	 * 
+	 */
 	public boolean puedeIngresar(Pieza pieza) throws PiezaAliadaException, PiezaEnemigaException {
 		/*
 		 * La pieza puede ingresar a la celda? no hay pieza devuelve un TRUE si hay
@@ -34,13 +48,16 @@ public class Celda {
 
 	}
 
+	/**
+	 * 	
+	 * @return
+	 * @param equipo
+	 * Si el equipo pasado por parametro es distinto al equipo de pieza ubicado en
+		  la celda devuelve TRUE sino devuelve false si no hay pieza en la celda
+		  devuelve un false
+	 */
+	
 	public boolean estaOcupadaEquipoContrario(Equipo equipo) {
-		/*
-		 * Si el equipo pasado por parametro es distinto al equipo de pieza ubicado en
-		 * la celda devuelve TRUE sino devuelve false si no hay pieza en la celda
-		 * devuelve un false
-		 */
-
 		if (equipo.getNombre() != this.getPieza().getEquipo().getNombre()) {
 			return true;
 		}

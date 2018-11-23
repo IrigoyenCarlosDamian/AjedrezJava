@@ -7,21 +7,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import pieza.*;
-
+/**
+ * El Tablero esta comuesto por un array bidimensional de celdas
+ * @author Carlos
+ *
+ */
 public class Tablero{
 
 	public Celda[][] celda;
 
-	/* Metodos */
+	/*Constructor*/
 	public Tablero() {
 		this.celda = new Celda[8][8];
 	}
 
+	/**
+	 *Se crea el tablero con sus celdas
+	*/
 	public void crear() {
-		/*
-		 * Se crea el tablero con sus celdas 
-		 * 
-		 */
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Celda c = new Celda(i, j);
@@ -31,7 +34,14 @@ public class Tablero{
 		}
 	}
 	
-
+/**
+ * 
+ * @param fila
+ * @param columna
+ * @return
+ * @throws FueraDeTableroException
+ * Retorna  una celda;
+ */
 	public Celda getCelda(int fila, int columna) throws FueraDeTableroException {
 		try {
 			return this.celda[fila][columna];
@@ -39,13 +49,15 @@ public class Tablero{
 			throw new FueraDeTableroException();
 		}
 	}
+	/**
+	 * mueve la pieza que se manda por parametro a la fila y columna que se envia
+	 * @param pieza
+	 * @param fila
+	 * @param columna
+	 */
 
 	public void mover(Pieza pieza, int fila, int columna) {
-		/*
-		 * mueve la pieza que se manda por parametro a la fila y columna que se envia
-		 * 
-		 */
-
+	
 		if (this.celda[fila][columna].getPieza() != null) {
 			this.celda[fila][columna].getPieza().setEstaViva(false);// Se mata la pieza
 		}
@@ -56,15 +68,20 @@ public class Tablero{
 		this.celda[fila][columna].setPieza(pieza);// Se coloca la pieza que se manda por parametro
 
 	}
-
+	/**
+	 * Dada una pieza enviada por parameto retorana un  ArrayList  de las piezas capaz de comer
+	 * a la pieza enviada por parametro
+	 * @param pieza
+	 * @return
+	 */
 	public ArrayList<Pieza> quienesMatan(Pieza pieza) {
 		
 		ArrayList<Pieza> losMatones = new ArrayList<Pieza>();
 		int filaAliada = pieza.getCelda().getFila();
 		int columnaAliada = pieza.getCelda().getColumna();
 		Equipo equipoEnemigo = Ajedrez.getSingletoneInstancia().getEquipoContrario(pieza.getEquipo());
-		
 		for (Pieza piezaEnemiga : equipoEnemigo.getPiezas()) {
+			if(piezaEnemiga.getEstaViva()==true) {
 			for (Celda celdaEnemiga : piezaEnemiga.getMovimientosPosibles()) {
 				int filaEnemiga = celdaEnemiga.getFila();
 				int columnaEnemiga = celdaEnemiga.getColumna();
@@ -72,6 +89,7 @@ public class Tablero{
 					//La piezaEnemiga puede comer a la Aliada
 					losMatones.add(piezaEnemiga);
 				}
+			}
 			}
 		}
 		
@@ -81,7 +99,9 @@ public class Tablero{
 	public void getPieza(Equipo equipo) {
 		// devolver la pieza del equipo
 	}
-
+	/**
+	 * Limpia el tablero de ajedrez
+	 */
 	public void limpiar() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -93,6 +113,10 @@ public class Tablero{
 		
 		
 	@Override
+	/**
+	 * Muestra las piezas del tablero 
+	 * en su celda correspondiente
+	 */
 	public String toString() {
 		for (int i = 0; i < 8; i++) {
 			System.out.println("----------------------------------------------------------" + "\t");

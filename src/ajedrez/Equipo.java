@@ -9,8 +9,13 @@ import java.util.Random;
 import excepciones.FueraDeTableroException;
 import pieza.Pieza;
 import pieza.Rey;
-
-public class Equipo {
+/**
+ * El equipo se crea con un nombre
+ * su array de piezas correspondiente y referencia a Ajedrez
+ * @author Carlos
+ *
+ */
+public  class Equipo {
 	private String nombre;
 	private Ajedrez ajedrez;
 	private boolean estaEnJaque;
@@ -24,7 +29,10 @@ public class Equipo {
 		this.piezas = new ArrayList<Pieza>();
 
 	}
-
+	/**
+	 *	Devuelve el rey del equipo actual  
+	 * @return
+	 */
 	public Pieza getRey() {
 		int j = 0;
 		for (int i = 0; i < this.piezas.size(); i++) {
@@ -37,21 +45,21 @@ public class Equipo {
 	}
 
 	/* Metodos */
+	
 	/*
 	 * en esta primera instancia devolvemos un mnovimiento cualquiera de todos los
 	 * disponibles para una pieza dada
 	 */
 	// TODO[a futuro ver de mejorar esta implementacion ]
-	/* Metodos */
-	/*
-	 * en esta primera instancia devolvemos un mnovimiento cualquiera de todos los
-	 * disponibles para una pieza dada
+	/**
+	 * 
+	 * @return
+	 * Retorna una jugada random de  todas las disponibles para un equipo dado 
 	 */
-	// TODO[a futuro ver de mejorar esta implementacion ]
 	public Jugada jugar() {
 		ArrayList<Jugada> jugadas = new ArrayList<Jugada>();
 
-		this.jugadaConPrioridad = null;
+		this.jugadaConPrioridad = null; // atributo para determinar una jugada proiritaria
 		
 		for (Jugada j : this.calcularJugadsPosibles()) {
 			jugadas.add(j);
@@ -66,7 +74,6 @@ public class Equipo {
 		 * nuestra logica es una jugada prioritaria
 		 */
 
-		
 		int i = jugadas.size();
 		System.out.println("Cantidad de movimientos posibles: "+i);
 		Random random = new Random(); // Instanciamos la clase Random
@@ -74,8 +81,11 @@ public class Equipo {
 																// de movimientos posibles
 		return jugadas.get(movimientoRandom); // devuelvo la jugada;
 	}
-
-	/* Retorna las jugadas posibles para una pieza dada (del arraylist) */
+	
+	/**
+	 *  Retorna las jugadas posibles para una pieza dada (del arraylist) 
+	 * @return
+	 */
 	public ArrayList<Jugada> calcularJugadsPosibles() {
 		ArrayList<Jugada> jugadasPosibles = new ArrayList<Jugada>();// arraylist con las jugadas para una pieza en
 																	// particular
@@ -89,16 +99,15 @@ public class Equipo {
 					jugada.setColumna(c.getColumna());
 					jugadasPosibles.add(jugada);
 				} 
-			} else {
-				//piezas.remove(piezas.indexOf(p));
-			}
-			// jugadasPosibles=p.getMovimientosPosibles(); // por cada piza calculo sus
-			// movimientos posibles y los asigno al ArrayList De Jugdas
+			} 
 		}
 		return jugadasPosibles;
 	}
 
 	@Override
+	/**
+	 * 
+	 */
 	public boolean equals(Object obj) {
 
 		if (obj instanceof Equipo) {
@@ -110,15 +119,22 @@ public class Equipo {
 	}
 
 	/* Geters y Seters */
+	
+	/**
+	 * 
+	 * @param c
+	 * @param pEnemiga
+	 * @param pAliada
+	     Jugada con Prioridad es una jugada donde se puede comer una pieza enemiga 
+		 c es la celda a donde esta la pieza enemiga 
+		 pEnemiga es la pieza Enemiga
+		 pAliada es la pieza que va a realizar la jugada 
+		 Si hay una jugada existente se comparan los ptjes de las piezas La jugada con Prioridad siempre tendra la pEemiga con mayor puntaje	 
+	 */
 
 	public void setJugadaConPrioridad(Celda c, Pieza pEnemiga, Pieza pAliada) {
-		/*
-		 * Jugada con Prioridad es una jugada donde se puede comer una pieza enemiga 
-		 * c es la celda a donde esta la pieza enemiga 
-		 * pEnemiga es la pieza Enemiga
-		 * pAliada es la pieza que va a realizar la jugada 
-		 * Si hay una jugada existente se comparan los ptjes de las piezas La jugada con Prioridad siempre tendra la pEemiga con mayor puntaje
-		 */
+		
+		 
 		Jugada j = new Jugada();
 
 		if (this.jugadaConPrioridad != null) {

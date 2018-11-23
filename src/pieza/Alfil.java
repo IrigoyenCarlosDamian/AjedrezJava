@@ -10,6 +10,11 @@ import excepciones.FueraDeTableroException;
 import excepciones.PiezaAliadaException;
 import excepciones.PiezaEnemigaException;
 
+/**
+ * El Alfil viene dado por una celda y un equipo 
+ * @author Carlos
+ *
+ */
 public class Alfil extends Pieza {
 
 	public Alfil(Celda celda, Equipo equipo) {
@@ -19,6 +24,9 @@ public class Alfil extends Pieza {
 
 	
 	@Override
+	/**
+	 * calculo los movimientos posilbes del Alfil en el turno de su equipo 
+	  */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
@@ -32,15 +40,22 @@ public class Alfil extends Pieza {
 		return listaCelda;
 	}
 
+	/**
+	 * 
+	 * @param c
+	 * @param tablero
+	 * @param listaCelda
+	 * @param fila
+	 * @param columna
+	 * 	  Se enlistan las celdas posibles segun los movimientos del  alfil si en fila
+		  viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
+		  culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
+		  significa movimiento ESTE si en columna viene un -1 y fila 0 significa
+		  movimiento OESTE
+		  
+	*/
 	private void movimiento(Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int fila, int columna) {
-		/*
-		 * Se enlistan las celdas posibles segun los movimientos d la torre si en fila
-		 * viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
-		 * culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
-		 * significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-		 * movimiento OESTE
-		 */
-
+		
 		boolean sePuede = true;
 		Celda mov = new Celda(0, 0);
 		while (sePuede) {

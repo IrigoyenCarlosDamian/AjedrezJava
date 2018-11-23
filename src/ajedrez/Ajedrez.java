@@ -1,7 +1,8 @@
 package ajedrez;
 
-import grafica.TableroGRAFICO;
+import grafica.TableroGrafico;
 import grafica.VentanaPrincipal;
+import interfaces.IJuegoListener;
 //import grafica.TableroGui;
 //import grafica.TableroGui.*;
 import interfaces.IPiezaListener;
@@ -16,39 +17,46 @@ import excepciones.FueraDeTableroException;
 //import grafica.vTableroJuego;
 import pieza.*;
 
+/**
+ * Clase administrador de juego, es la encargada de crear, controlar, y mostrar todo lo relacionado al 
+ * 	juego
+ * @author carlos
+ */
 public class Ajedrez {
 	public static final String BLANCA = "Blanca";
 	public static final String NEGRA = "Negra";
-	
 	private Tablero tablero;
 	private Equipo blancas;
 	private Equipo negras;
 	private static Ajedrez instancia = new Ajedrez();// singletone
 	private ArrayList<IJuegoListener> juegoListener;
-	private  boolean juegoReiniciado;
-	/* Geters y Seters */
+	private boolean juegoReiniciado;
+	/* Geters y Seters */ 
 
 	private Ajedrez() {
-		this.juegoListener= new ArrayList<IJuegoListener>();
-	
+		this.juegoListener = new ArrayList<IJuegoListener>();
+
 	}
+	/**
+	 * devuelve la instancia de AdministradorJuego
+	 * @return
+	 */
 
 	public static Ajedrez getSingletoneInstancia() {
-	
+
 		return instancia;
 	}
-	
+	/** 
+	 * @author carlos
+	 * @param Inicializa El tablero, se crea el tablero y los equipos
+	 * 
+	 */
 	public void inicarJuego() {
-		/**xº
-		 * @author carlos
-		 * @param Inicializa El tablero, se crea el tablero y los equipos
-		 * 
-		 */
-		// Tablero tablero= new Tablero();
-		this.juegoReiniciado=false;
+		this.juegoReiniciado = false;
 		this.tablero = new Tablero();
-		this.blancas = new Equipo(BLANCA);
-		this.negras = new Equipo(NEGRA);
+		this.blancas= new Equipo(BLANCA);
+		this.negras= new Equipo(NEGRA); 
+		
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
@@ -59,24 +67,30 @@ public class Ajedrez {
 			escuchador.JuegoIniciado();
 		}
 		mostrarTablero();
-	 
+
 	}
 
+	/**
+	 * 
+	 * @param equipo
+	 * @param tablero
+	 * @throws FueraDeTableroException
+	 *  Gestiona los turnos de los equipos duarante la partida 
+	 */
 	public void darTurnos(Equipo equipo, Tablero tablero) throws FueraDeTableroException {
 
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.turnoActual(equipo);
 		}
-		
+
 		Jugada jugada = equipo.jugar();
-		Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no
-																			// deberia salir del tablero
-		
-		
+		Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no deberia salir del tablero
 		tablero.mover(jugada.getPieza(), jugada.getFila(), jugada.getColumna());
-		// System.out.println("Turno Del Equipo: "+equipo.getNombre());
 		mostrarTablero();
 	}
+	/**
+	 * Muestra el tablero en consola (las Piezas se representan mediante caracteres)
+	 */
 
 	public void mostrarTablero() {
 
@@ -84,52 +98,63 @@ public class Ajedrez {
 
 	}
 
+	/**
+	 * 
+	 * @throws FueraDeTableroException
+	 *  Cominza la partida de ajedrez
+	 */
 	public void comenzar() throws FueraDeTableroException {
-		// vTableroJuego vista= new vTableroJuego(this.getInstancia());	
+		// vTableroJuego vista= new vTableroJuego(this.getInstancia());
 		while (!this.esFinJuego(blancas, negras)) {
-			//this.frame.setTurno(BLANCA);
+			// this.frame.setTurno(BLANCA);
 			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			Esperar.esprerar();
 			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
-				//this.frame.setTurno(NEGRA);
+				// this.frame.setTurno(NEGRA);
 				darTurnos(this.negras, tablero);
 				Esperar.esprerar();
 			}
 		}
-		//Se termino el partido
+		// Se termnino la partida 
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.juegoFinalizado();
 		}
-	}		
-	
-	private boolean esFinJuego(Equipo equipo1, Equipo equipo2) {
+	}
 
-		if (equipo1.getRey().getEstaViva() && equipo2.getRey().getEstaViva()&& this.juegoReiniciado==false) {
-			if(this.getTablero().quienesMatan(equipo1.getRey()) != null) {
+	private boolean esFinJuego(Equipo equipoEnTurno, Equipo equipoEnemigo) {
+
+		if (equipoEnTurno.getRey().getEstaViva()  && equipoEnemigo.getRey().getEstaViva()) {
+			int i = 0;
+			Pieza rey = equipoEnTurno.getRey();
+			i = this.getTablero().quienesMatan(rey).size();
+			if (i > 0) {
 				for (IJuegoListener escuchador : juegoListener) {
-					escuchador.equipoEnJaque(equipo1);
+					escuchador.equipoEnJaque(equipoEnTurno);
 				}
-			}
-			if(this.getTablero().quienesMatan(equipo2.getRey()) != null) {
-				for (IJuegoListener escuchador : juegoListener) {
-					escuchador.equipoEnJaque(equipo2);
-				}
+
 			}
 			
-			for (IJuegoListener escuchador : juegoListener) {
-				escuchador.juegoFinalizado();
-			}
 			return false;
+		}
+		for (IJuegoListener escuchador : juegoListener) {
+			escuchador.juegoFinalizado();
 		}
 		return true;
 	}
 
-	
-	//VER SI SE DEBE SACAR METODO
+	/*
+	 * 
+	 * @return
+	 * Retorna la instancia de  tablero 
+	 */
 	public Tablero getTablero() {
 		return this.tablero;
 	}
-
+	/**
+	 * 
+	 * @throws FueraDeTableroException
+	 * Crea las piezas en el tablero de ajedrez
+	 */
 	public void crearPiezasEnTablero() throws FueraDeTableroException {
 
 		Pieza p = null;
@@ -179,14 +204,14 @@ public class Ajedrez {
 						c.setPieza(p = new Dama(c, blancas));
 					}
 				}
-				
+
 				if (i == 1) { // Peones Negros
 					c.setPieza(p = new Peon(c, negras));
 				}
 				if (i == 6) {// Peones Blancos
 					c.setPieza(p = new Peon(c, blancas));
 				}
-				
+
 				if (1 < i && i < 6) {
 					p = null;
 				} else {
@@ -195,22 +220,27 @@ public class Ajedrez {
 					} else {
 						negras.getPiezas().add(p);
 					}
-					//p.addPiezaListener(this.tableroGui);
+					// p.addPiezaListener(this.tableroGui);
 				}
 
 				// Se agrega como escuchador Tablero
-				//p.addPiezaListener(tableroGui);
+				// p.addPiezaListener(tableroGui);
 
 				this.tablero.celda[i][j].setPieza(p);
 			}
 
 		}
-		
+
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param equipo
+	 * @return
+	 * Dado un equipo pasado por parameto devuelve el equipo contrario 
+	 */
 	public Equipo getEquipoContrario(Equipo equipo) {
-		
+
 		if (equipo.getNombre() == Ajedrez.BLANCA) {
 			return negras;
 		} else {
@@ -229,12 +259,9 @@ public class Ajedrez {
 	public Equipo getNegras() {
 		return negras;
 	}
+
 	public void addJuegoListener(IJuegoListener listener) {
 		this.juegoListener.add(listener);
 	}
-	
-	public void update() {
-		
-	}
-}
 
+}

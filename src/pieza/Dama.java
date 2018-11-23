@@ -9,7 +9,11 @@ import ajedrez.Tablero;
 import excepciones.FueraDeTableroException;
 import excepciones.PiezaAliadaException;
 import excepciones.PiezaEnemigaException;
-
+/**
+ * La Dama viene dada por una celda y un equipo 
+ * @author Carlos
+ *
+ */
 public class Dama extends Pieza {
 
 	public Dama(Celda celda, Equipo equipo) {
@@ -20,6 +24,9 @@ public class Dama extends Pieza {
 
 
 	@Override
+	/**
+	 * Calculo los movimientos posibles de la dama en el turno de su equipo 
+	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
@@ -36,14 +43,16 @@ public class Dama extends Pieza {
 		return listaCelda;
 	}
 
+	/**
+	 *   Se enlistan las celdas posibles segun los movimientos d la torre si en fila
+	 	 viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
+	 	 culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
+	 	 significa movimiento ESTE si en columna viene un -1 y fila 0 significa
+	 	 movimiento OESTE
+	  */
+	
 	private void movimiento(Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int fila, int columna) {
-		/*
-		 * Se enlistan las celdas posibles segun los movimientos d la torre si en fila
-		 * viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
-		 * culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
-		 * significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-		 * movimiento OESTE
-		 */
+		
 
 		boolean sePuede = true;
 		Celda mov = new Celda(0, 0);

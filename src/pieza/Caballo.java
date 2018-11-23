@@ -10,6 +10,11 @@ import excepciones.NoHayPiezaException;
 import excepciones.PiezaAliadaException;
 import excepciones.PiezaEnemigaException;
 
+/**
+ * 
+ * @author Carlos
+ *	El Caballo viene dado por una celda y un equipo 
+ */
 public class Caballo extends Pieza {
 
 	/* Constructores */
@@ -22,7 +27,9 @@ public class Caballo extends Pieza {
 	
 	
 	
-	/* Metodos */
+	/**
+	 * Calculo los movimientos posibles del caballo en el turno de su equipo 
+	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
@@ -45,7 +52,17 @@ public class Caballo extends Pieza {
 
 		return listaCelda;
 	}
-
+	/**
+	 * 
+	 * @param mov
+	 * @param c
+	 * @param tablero
+	 * @param listaCelda
+	 * @param i
+	 * @param j
+	 * calulo las celdas posibles para el caballo 
+	 * 
+	 */
 	private void movimiento(Celda mov, Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int i, int j) {
 		try {
 			mov = tablero.getCelda(c.getFila() + i, c.getColumna() + j);

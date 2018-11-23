@@ -2,7 +2,11 @@ package ajedrez;
 
 
 import pieza.Pieza;
-
+/**
+ * Una jugada viene dada por una  pieza,una fila y una columna 
+ * @author Carlos
+ *
+ */
 public class Jugada {
 	private Pieza pieza;
 	private int fila;

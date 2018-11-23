@@ -9,7 +9,11 @@ import excepciones.FueraDeTableroException;
 import excepciones.NoHayPiezaException;
 import excepciones.PiezaAliadaException;
 import excepciones.PiezaEnemigaException;
-
+/**
+ * El Rey viene dado por una celda y un equipo 
+ * @author Carlos
+ *
+ */
 public class Rey extends Pieza {
 
 	public Rey(Celda celda, Equipo equipo) {
@@ -19,6 +23,9 @@ public class Rey extends Pieza {
 
 
 	@Override
+	/**
+	 * Calcula los movimientos posibles del rey en el turno de su equipo 
+	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Tablero tablero = getTablero();// Tramos al tablero
@@ -55,6 +62,7 @@ public class Rey extends Pieza {
 	public String toString() {
 		return super.toString() + "R";
 	}
+	
 
 	/* Geters y Seters */
 
