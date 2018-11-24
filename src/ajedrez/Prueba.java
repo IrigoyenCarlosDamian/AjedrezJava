@@ -17,18 +17,14 @@ public class Prueba {
 
 	public static void main(String[] args)  {
 		Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
-		Ajedrez.getSingletoneInstancia().inicarJuego();
 		TableroGrafico tableroGui =new TableroGrafico();
 		VentanaPrincipal ventanaPrincipal= new VentanaPrincipal(tableroGui);
+		//Ajedrez.getSingletoneInstancia().getBlancas().setTablero(tableroGui);
+	//	Ajedrez.getSingletoneInstancia().getNegras().setTablero(tableroGui);
 		ventanaPrincipal.setVisible(true);
 		ventanaPrincipal.setVentanaPrincipal(ajedrez);
 		ventanaPrincipal.setResizable(false);
-		for(Pieza p : ajedrez.getBlancas().getPiezas()) {
-			tableroGui.setPieza(p);
-		}
-		for(Pieza p : ajedrez.getNegras().getPiezas()) {
-			tableroGui.setPieza(p);
-		}
+		
 		
 	}
 

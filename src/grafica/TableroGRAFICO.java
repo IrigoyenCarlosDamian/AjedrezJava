@@ -10,6 +10,7 @@ import ajedrez.Ajedrez;
 import ajedrez.Celda;
 import ajedrez.Tablero;
 import excepciones.FueraDeTableroException;
+import interfaces.IJugador;
 import interfaces.IPiezaListener;
 import pieza.Pieza;
 
@@ -20,6 +21,7 @@ import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 /**
  * Tablero grafico para el juego de ajedrez
  * @author Carlos
@@ -31,7 +33,7 @@ public class TableroGrafico extends JPanel implements IPiezaListener {
 	// del tablero
 	private JButton[][] cuadrados = new JButton[8][8];
 	private Color negro = Color.gray;
-	
+	private ArrayList<IJugador> jugadores= new ArrayList<IJugador>();
 	/*Defino los inconos de las piezas*/
 	private ImageIcon caballob = new ImageIcon("caballob.png");
 	private ImageIcon caballon = new ImageIcon("caballon.png");
@@ -139,6 +141,8 @@ public class TableroGrafico extends JPanel implements IPiezaListener {
 				for (int j = 0; j < 8; j++) {
 					if (fuente == cuadrados[i][j]) {
 						botonApretado(i, j);
+						i=8;
+						j=8;
 						return;
 					}
 				}
@@ -152,42 +156,8 @@ public class TableroGrafico extends JPanel implements IPiezaListener {
 		 * @param j
 		 */
 		public void botonApretado(int i, int j) {
-		
-			if (segundoClick) {
-				Celda celda;
-				Pieza pieza = null;
-				Tablero tablero = Ajedrez.getSingletoneInstancia().getTablero();
-				
-				try {
-					celda = tablero.getCelda(i, j);
-					pieza = celda.getPieza();
-				} catch (FueraDeTableroException e) {}
-				
-				if ((i != fila) || (j != columna)) {
-					cuadrados[i][j].setIcon(icono);
-					cuadrados[fila][columna].setIcon(null);
-					segundoClick = false;
-					icono = null;
-					return;
-				}
-				
-				/*
-				 if ((i != fila) || (j != columna)) {
-					cuadrados[i][j].setIcon(icono);
-					cuadrados[fila][columna].setIcon(null);
-					segundoClick = false;
-					icono = null;
-					return;
-				}
-				 * */
-				
-			}
-			if (cuadrados[i][j].getIcon() != null) {
-				icono = cuadrados[i][j].getIcon();
-				fila = i;
-				columna = j;
-				segundoClick = true;
-				return;
+			for(IJugador escuchador: jugadores) {
+				escuchador.botonApretado(i, j);
 			}
 
 		}
@@ -201,8 +171,6 @@ public class TableroGrafico extends JPanel implements IPiezaListener {
 		
 		
 		Icon iconAux = cuadrados[c1.getFila()][c1.getColumna()].getIcon();
-		//Icon iconAux = p.getIcon; //ESTO ES LO QUE CREO QUE TENDRIAMOS QUE HACER
-		//PORQUE POR ALGO TE MANDAN LA PIEZA SINO NO SE, SINO PIEZA ESTA AL PEDO
 		cuadrados[c2.getFila()][c2.getColumna()].setIcon(iconAux);//agarro el icono
 		cuadrados[c1.getFila()][c1.getColumna()].setIcon(null);//lo muevo
 		VentanaPrincipal.movimientoDePiza(p,c2);
@@ -217,6 +185,12 @@ public class TableroGrafico extends JPanel implements IPiezaListener {
 	
 	public void setPieza (Pieza piecitaSignificativa) {
 		piecitaSignificativa.addPiezaListener(this);
+	}
+	public void addIJugadorListener(IJugador jugador) {
+		this.jugadores.add(jugador);
+	}
+	public void removeIJugadorListener(IJugador jugador) {
+		this.jugadores.remove(jugador);
 	}
 
 }

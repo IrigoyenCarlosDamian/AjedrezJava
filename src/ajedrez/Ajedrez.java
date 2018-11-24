@@ -1,20 +1,9 @@
 package ajedrez;
 
-import grafica.TableroGrafico;
-import grafica.VentanaPrincipal;
 import interfaces.IJuegoListener;
-//import grafica.TableroGui;
-//import grafica.TableroGui.*;
-import interfaces.IPiezaListener;
 import util.Esperar;
-
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.JOptionPane;
-
 import excepciones.FueraDeTableroException;
-//import grafica.vTableroJuego;
 import pieza.*;
 
 /**
@@ -28,20 +17,17 @@ public class Ajedrez {
 	private Tablero tablero;
 	private Equipo blancas;
 	private Equipo negras;
+	private Equipo equipoEnTurno;
 	private static Ajedrez instancia = new Ajedrez();// singletone
 	private ArrayList<IJuegoListener> juegoListener;
-	private boolean juegoReiniciado;
-	/* Geters y Seters */ 
 
 	private Ajedrez() {
 		this.juegoListener = new ArrayList<IJuegoListener>();
-
 	}
 	/**
 	 * devuelve la instancia de AdministradorJuego
 	 * @return
 	 */
-
 	public static Ajedrez getSingletoneInstancia() {
 
 		return instancia;
@@ -51,17 +37,14 @@ public class Ajedrez {
 	 * @param Inicializa El tablero, se crea el tablero y los equipos
 	 * 
 	 */
-	public void inicarJuego() {
-		this.juegoReiniciado = false;
+	public void inicarJuego(Equipo equipo1,Equipo equipo2) {
 		this.tablero = new Tablero();
-		this.blancas= new Equipo(BLANCA);
-		this.negras= new Equipo(NEGRA); 
-		
+		this.blancas=equipo1;
+		this.negras=equipo2; 
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
 		} catch (FueraDeTableroException e) {
-			// TODO: handle exception
 		}
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.JuegoIniciado();
@@ -74,7 +57,7 @@ public class Ajedrez {
 	 * 
 	 * @param equipo
 	 * @param tablero
-	 * @throws FueraDeTableroException
+	 * @throws FueraDeTableroException excepcion que se larga si la celda de destino es una indice  invalido del array 
 	 *  Gestiona los turnos de los equipos duarante la partida 
 	 */
 	public void darTurnos(Equipo equipo, Tablero tablero) throws FueraDeTableroException {
@@ -82,9 +65,9 @@ public class Ajedrez {
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.turnoActual(equipo);
 		}
-
+		setEquipoEnTurno(equipo);
 		Jugada jugada = equipo.jugar();
-		Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no deberia salir del tablero
+		//Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no deberia salir del tablero
 		tablero.mover(jugada.getPieza(), jugada.getFila(), jugada.getColumna());
 		mostrarTablero();
 	}
@@ -104,15 +87,11 @@ public class Ajedrez {
 	 *  Cominza la partida de ajedrez
 	 */
 	public void comenzar() throws FueraDeTableroException {
-		// vTableroJuego vista= new vTableroJuego(this.getInstancia());
+
 		while (!this.esFinJuego(blancas, negras)) {
-			// this.frame.setTurno(BLANCA);
 			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
-			Esperar.esprerar();
 			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
-				// this.frame.setTurno(NEGRA);
 				darTurnos(this.negras, tablero);
-				Esperar.esprerar();
 			}
 		}
 		// Se termnino la partida 
@@ -248,10 +227,7 @@ public class Ajedrez {
 		}
 	}
 
-	public void setJuegoReiniciado(boolean juegoReiniciado) {
-		this.juegoReiniciado = juegoReiniciado;
-	}
-
+	
 	public Equipo getBlancas() {
 		return blancas;
 	}
@@ -259,7 +235,22 @@ public class Ajedrez {
 	public Equipo getNegras() {
 		return negras;
 	}
+	
+	
 
+	public Equipo getEquipoEnTurno() {
+		return equipoEnTurno;
+	}
+	public void setEquipoEnTurno(Equipo equipoEnTurno) {
+		this.equipoEnTurno = equipoEnTurno;
+	}
+	
+	public void setBlancas(Equipo blancas) {
+		this.blancas = blancas;
+	}
+	public void setNegras(Equipo negras) {
+		this.negras = negras;
+	}
 	public void addJuegoListener(IJuegoListener listener) {
 		this.juegoListener.add(listener);
 	}

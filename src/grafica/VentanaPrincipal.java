@@ -13,6 +13,8 @@ import ajedrez.Celda;
 import ajedrez.Equipo;
 import interfaces.IJuegoListener;
 import ajedrez.Prueba;
+import equipos.EquipoHumano;
+import equipos.EquipoMaster;
 import excepciones.FueraDeTableroException;
 import pieza.*;
 import pieza.Pieza;
@@ -65,19 +67,21 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 	public JScrollPane scrollPane;
 	public static JTextArea textArea;
 	private static JTextField textField;
-	private static JTextField textField_1;
+	private static JTextField textField1;
+	private static TableroGrafico tableroGui;
 	
 	/**
 	 * Create the frame.
 	 */
 	public VentanaPrincipal(TableroGrafico tablero) {
+		this.tableroGui= tablero;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(new Dimension(671, 500));
 		setLocationRelativeTo(null); // Centra la ventana
 		this.panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(new BorderLayout(0, 0));
-		turnoActual = new JButton("Turno del Equipo :");
+		turnoActual = new JButton("Equipo Negra");
 		panel.add(turnoActual, BorderLayout.NORTH);
 		turnoActual.setAlignmentY(Component.TOP_ALIGNMENT);
 		turnoActual.setVerticalAlignment(SwingConstants.TOP);
@@ -91,7 +95,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 		scrollPane.setViewportView(textArea);
 		//textArea.setBorder(new TitledBorder("Jugadas"));
 		textArea.setForeground(Color.BLACK);
-		turnoActual2 = new JButton("Turno del Equipo :");
+		turnoActual2 = new JButton("Equipo Blanca");
 		turnoActual2.setAlignmentY(Component.TOP_ALIGNMENT);
 		turnoActual2.setVerticalAlignment(SwingConstants.TOP);
 		turnoActual2.setFont(new Font("Times New Roman", Font.PLAIN, 24));
@@ -101,16 +105,16 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.NORTH);
 		
-		textField = new JTextField();
-		textField.setText("Piezas Negras Vivas: 16"+" "+" Piezas Negras Comidas:0");
-		textField.setEditable(false);
-		panel_1.add(textField);
+		textField1 = new JTextField();
+		textField1.setText("Piezas Negras Vivas: 16"+" "+" Piezas Negras Comidas:0");
+		textField1.setEditable(false);
+		panel_1.add(textField1);
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
-		textField_1 = new JTextField();
-		textField_1.setText("Piezas Blancas Vivas: 16"+" "+" Piezas Blancas Comidas:0");
-		textField_1.setEditable(false);
-		panel_2.add(textField_1);
+		textField = new JTextField();
+		textField.setText("Piezas Blancas Vivas: 16"+" "+" Piezas Blancas Comidas:0");
+		textField.setEditable(false);
+		panel_2.add(textField);
 		getContentPane().add(tablero, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -118,7 +122,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 
 		JMenu juegoMenu = new JMenu("Juego");
 		menuBar.add(juegoMenu);
-		JMenuItem juegoMenuIniciar = new JMenuItem("Iniciar");
+		JMenu juegoMenuIniciar = new JMenu("Iniciar");
 		juegoMenu.add(juegoMenuIniciar);
 
 		JMenuItem juegoMenuFinalizar = new JMenuItem("Pausa");
@@ -135,39 +139,34 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 
 		JMenuItem ayudaMenuAcercaDe = new JMenuItem("Acerca de...");
 		ayudaMenu.add(ayudaMenuAcercaDe);
-		
-		JMenu modoDeJuego = new JMenu("ModoDeJuego");
-		menuBar.add(modoDeJuego);
-		
+	
 		JMenuItem maquinaContrMaquina = new JMenuItem("Maquina Vs Maquina");
-		modoDeJuego.add(maquinaContrMaquina);
-		
+		juegoMenuIniciar.add(maquinaContrMaquina);
 		JMenuItem maquinaContraPersona = new JMenuItem("Maquina Vs Persona");
-		modoDeJuego.add(maquinaContraPersona);
-		
+		juegoMenuIniciar.add(maquinaContraPersona);
 		JMenuItem  personaContraPersona = new JMenuItem("Persona Vs Persona");
-		modoDeJuego.add(personaContraPersona);
-
+		juegoMenuIniciar.add(personaContraPersona);
+		
 		// Agrego el action command
 		juegoMenuIniciar.setActionCommand("Iniciar");
 		juegoMenuFinalizar.setActionCommand("Pausa");
 		juegoMenuReiniciar.setActionCommand("Reinicar");
 		juegoMenuCerrar.setActionCommand("Cerrar");
 		ayudaMenuAcercaDe.setActionCommand("Acerca De");
-	
+		maquinaContrMaquina.setActionCommand("Maquina vs Maquina");
+		maquinaContraPersona.setActionCommand("Maquina Vs Persona");
+		personaContraPersona.setActionCommand("Persona vs Persona");
+		
 		// Agrego el listner a cada boton (quien los va a escuchar)
 		juegoMenuFinalizar.addActionListener(this);
 		juegoMenuReiniciar.addActionListener(this);
 		juegoMenuCerrar.addActionListener(this);
 		ayudaMenuAcercaDe.addActionListener(this);
 		juegoMenuIniciar.addActionListener(this);
+		maquinaContrMaquina.addActionListener(this);
+		maquinaContraPersona.addActionListener(this);
+		personaContraPersona.addActionListener(this);
 
-		/*
-		 *
-		 * setBounds(100, 100, 450, 300); contentPane = new JPanel();
-		 * contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); contentPane.setLayout(new
-		 * BorderLayout(0, 0)); setContentPane(contentPane);
-		 */
 	}
 	public void actionPerformed(ActionEvent evento) {
 		Runnable miRunnable = new Runnable() {
@@ -175,21 +174,60 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 				try {
 					if (evento.getActionCommand() == "Iniciar") {
 				
-						Ajedrez.getSingletoneInstancia().comenzar();
 
 					} else if (evento.getActionCommand() == "Acerca De") {
 						JOptionPane.showMessageDialog(null, "Integrantes: Irigoyen Carlos, Villanueva Alex");
 					} else if (evento.getActionCommand() == "Reinicar") {
-
-						Ajedrez.getSingletoneInstancia().setJuegoReiniciado(true);
 						dispose();
 						Prueba.main(null);
 
 					} else if (evento.getActionCommand() == "Cerrar") {
 						System.exit(0);
-					} else if (evento.getActionCommand() == "Pausa") {
-						Ajedrez.getSingletoneInstancia().setJuegoReiniciado(true);
-						JOptionPane.showMessageDialog(null, "Juego Pausado");
+					}else if (evento.getActionCommand()=="Maquina vs Maquina") {
+						Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
+						Equipo equipo1= new EquipoMaster(Ajedrez.BLANCA);
+						Equipo equipo2= new EquipoMaster(Ajedrez.NEGRA);
+						ajedrez.inicarJuego(equipo1, equipo2);
+						ajedrez.getBlancas().setTablero(tableroGui);
+						ajedrez.getNegras().setTablero(tableroGui);
+						for(Pieza p : ajedrez.getBlancas().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						for(Pieza p : ajedrez.getNegras().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						ajedrez.comenzar();
+
+					}else if(evento.getActionCommand()=="Maquina Vs Persona") {
+						Equipo equipo1= new EquipoHumano(Ajedrez.BLANCA);
+						Equipo equipo2= new EquipoMaster(Ajedrez.NEGRA);
+						Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
+						ajedrez.inicarJuego(equipo1, equipo2);
+						ajedrez.getBlancas().setTablero(tableroGui);
+						ajedrez.getNegras().setTablero(tableroGui);
+						for(Pieza p : ajedrez.getBlancas().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						for(Pieza p : ajedrez.getNegras().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						ajedrez.comenzar();
+						
+				
+					}else if(evento.getActionCommand()=="Persona vs Persona") {
+						Equipo equipo1= new EquipoHumano(Ajedrez.BLANCA);
+						Equipo equipo2= new EquipoHumano(Ajedrez.NEGRA);
+						Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
+						ajedrez.inicarJuego(equipo1, equipo2);
+						ajedrez.getBlancas().setTablero(tableroGui);
+						ajedrez.getNegras().setTablero(tableroGui);
+						for(Pieza p : ajedrez.getBlancas().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						for(Pieza p : ajedrez.getNegras().getPiezas()) {
+							tableroGui.setPieza(p);
+						}
+						ajedrez.comenzar();
 					}
 
 				} catch (Exception e) {
@@ -240,7 +278,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 		if(pieza.getEquipo().getNombre()==Ajedrez.getSingletoneInstancia().BLANCA) {
 			VentanaPrincipal.piezasVivasBlancas=VentanaPrincipal.piezasVivasBlancas-1;
 			VentanaPrincipal.piezasComidasBlancas= VentanaPrincipal.piezasComidasBlancas+1;
-			VentanaPrincipal.textField_1.setText("Piezas Blancas Vivas: "
+			VentanaPrincipal.textField.setText("Piezas Blancas Vivas: "
 			+" "
 			+VentanaPrincipal.piezasVivasBlancas+"  "
 			+"Piezas Blancas Comidas:" 
@@ -250,7 +288,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener,IJuegoLis
 		else if(pieza.getEquipo().getNombre()==Ajedrez.getSingletoneInstancia().NEGRA) {
 			VentanaPrincipal.piezasVivasNegras=VentanaPrincipal.piezasVivasNegras-1;
 			VentanaPrincipal.piezasComidasNegras=VentanaPrincipal.piezasComidasNegras+1;
-			VentanaPrincipal.textField.setText("Piezas Negas Vivas: "
+			VentanaPrincipal.textField1.setText("Piezas Negas Vivas: "
 					+" "
 					+VentanaPrincipal.piezasVivasNegras+"  "
 					+"Piezas Negras Comidas:" 

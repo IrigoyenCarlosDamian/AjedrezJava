@@ -1,11 +1,7 @@
 package ajedrez;
 
 import excepciones.*;
-import interfaces.IPiezaListener;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import pieza.*;
 /**
  * El Tablero esta comuesto por un array bidimensional de celdas
