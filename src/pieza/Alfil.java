@@ -19,7 +19,7 @@ public class Alfil extends Pieza {
 
 	public Alfil(Celda celda, Equipo equipo) {
 		super(celda, equipo);
-		super.setPuntos(4);
+		this.setPuntos(4);
 	}
 
 	
@@ -30,16 +30,16 @@ public class Alfil extends Pieza {
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
-		Tablero tablero = getTablero();// Tramos al tablero
 
-		movimiento(c, tablero, listaCelda, -1, -1); // NOR-OESTE
-		movimiento(c, tablero, listaCelda, -1, +1); // NOR-ESTE
-		movimiento(c, tablero, listaCelda, +1, +1); // SUR-ESTE
-		movimiento(c, tablero, listaCelda, +1, -1); // SUR-OESTE
+		movimiento(c,listaCelda, -1, -1); // NOR-OESTE
+		movimiento(c,listaCelda, -1, +1); // NOR-ESTE
+		movimiento(c,listaCelda, +1, +1); // SUR-ESTE
+		movimiento(c,listaCelda, +1, -1); // SUR-OESTE
 
 		return listaCelda;
 	}
 
+	//TODO [CORRECCION] Mal documentado
 	/**
 	 * 
 	 * @param c
@@ -54,13 +54,13 @@ public class Alfil extends Pieza {
 		  movimiento OESTE
 		  
 	*/
-	private void movimiento(Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int fila, int columna) {
+	private void movimiento(Celda c,ArrayList<Celda> listaCelda, int fila, int columna) {
 		
 		boolean sePuede = true;
 		Celda mov = new Celda(0, 0);
 		while (sePuede) {
 			try {
-				mov = tablero.getCelda(c.getFila() + fila, c.getColumna() + columna);// Celda a donde se avanza
+				mov = this.getTablero().getCelda(c.getFila() + fila, c.getColumna() + columna);// Celda a donde se avanza
 				try {
 					if (mov.puedeIngresar(this)) {// Unicamente devuelve verdad si esta vacia la celda
 						listaCelda.add(mov);
@@ -69,7 +69,7 @@ public class Alfil extends Pieza {
 					sePuede = false; // Se termina la trayectoria a esa direccion
 				} catch (PiezaEnemigaException e1) {
 					listaCelda.add(mov);
-					this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);
+					this.getEquipo().agregarJugadaConPrioridad(mov, mov.getPieza(), this);
 					sePuede = false; // Se termina la trayectoria a esa direccion
 				}
 			} catch (FueraDeTableroException e) {

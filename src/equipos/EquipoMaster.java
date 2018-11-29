@@ -8,112 +8,46 @@ import ajedrez.Ajedrez;
 import ajedrez.Celda;
 import ajedrez.Equipo;
 import ajedrez.Jugada;
-import grafica.TableroGrafico;
+import excepciones.FueraDeTableroException;
+import grafica.TableroGui;
 import interfaces.IJugador;
 import pieza.Pieza;
 import pieza.Rey;
 import util.Esperar;
+
 /**
- * El equipo se crea con un nombre
- * su array de piezas correspondiente y referencia a Ajedrez
- *  efectua sus movimientos priorizando comer las piezas del equipo contrario 
+ * El equipo se crea con un nombre su array de piezas correspondiente y
+ * referencia a Ajedrez efectua sus movimientos priorizando comer las piezas del
+ * equipo contrario
+ * 
  * @author Carlos
  *
  */
-public  class EquipoMaster extends Equipo {
+public class EquipoMaster extends Equipo {
 	private Jugada jugadaConPrioridad;
 
 	/* Construcotres */
 	public EquipoMaster(String nombre) {
 		super(nombre);
 	}
-	/**
-	 *	Devuelve el rey del equipo con el actual  
-	 * @return
-	 */
-	public Pieza getRey() {
-		 return super.getRey();
-	}
 
 	/* Metodos */
-	
-	@Override
-	/*
-	 * Calcula las jugadas posibles de las piezas del equipo dado un puntaje  que posen las piezas como atributo
-	 * prioriza comer la pieza con mayor puntaje 
-	 * 
-	 * */
-	public Jugada jugar() {
-		ArrayList<Jugada> jugadas = new ArrayList<Jugada>();
-
-		this.jugadaConPrioridad = null; // atributo para determinar una jugada proiritaria
-		
-		for (Jugada j : this.calcularJugadsPosibles()) {
-			jugadas.add(j);
-		}
-		/*Si esta instruccion da distinto de null, significa que hay algo para comer y para
-		  nuestra logica es una jugada prioritaria
-		 */
-		if (this.jugadaConPrioridad != null) {
-			if(jugadaConPrioridad.getPieza() != null)
-				return this.jugadaConPrioridad;
-		}
-		
-
-		int i = jugadas.size();
-		System.out.println("Cantidad de movimientos posibles: "+i);
-		Random random = new Random(); // Instanciamos la clase Random
-		int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y la cantidad
-																// de movimientos posibles
-		Esperar.esprerar();
-		return jugadas.get(movimientoRandom); // devuelvo la jugada;
-	}
-	
-	/**
-	 *  Retorna las jugadas posibles para una pieza dada (del arraylist) 
-	 * @return
-	 */
-	public ArrayList<Jugada> calcularJugadsPosibles() {
-		ArrayList<Jugada> jugadasPosibles = new ArrayList<Jugada>();// arraylist con las jugadas para una pieza en
-																	// particular
-
-		for (Pieza p : super.getPiezas()) { // el array list de las piezas de un equipo
-			Jugada jugada = new Jugada();
-			if (p.getEstaViva()) {
-				for (Celda c : p.getMovimientosPosibles()) {
-					jugada.setPieza(p);
-					jugada.setFila(c.getFila());
-					jugada.setColumna(c.getColumna());
-					jugadasPosibles.add(jugada);
-				} 
-			} 
-		}
-		return jugadasPosibles;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-	
-	}
 
 	/* Geters y Seters */
-	
+
 	/**
 	 * 
-	 * @param c
-	 * @param pEnemiga
-	 * @param pAliada
-	     Jugada con Prioridad es una jugada donde se puede comer una pieza enemiga 
-		 c es la celda a donde esta la pieza enemiga 
-		 pEnemiga es la pieza Enemiga
-		 pAliada es la pieza que va a realizar la jugada 
-		 Si hay una jugada existente se comparan los ptjes de las piezas La jugada con Prioridad siempre tendra la pEemiga con mayor puntaje	 
+	 * @param c es la celda a donde esta la pieza enemiga
+	 * @param pEnemiga es la pieza Enemiga 
+	 * @param pAliada  
+	 * Jugada con Prioridad es una jugada donde se puede comer una es la pieza que va a
+	 * realizar la jugada Si hay una jugada existente se comparan
+	 * los ptjes de las piezas La jugada con Prioridad siempre
+	 * tendra la pEemiga con mayor puntaje
 	 */
 
 	public void setJugadaConPrioridad(Celda c, Pieza pEnemiga, Pieza pAliada) {
-		
-		 
+
 		Jugada j = new Jugada();
 
 		if (this.jugadaConPrioridad != null) {
@@ -133,24 +67,47 @@ public  class EquipoMaster extends Equipo {
 		}
 	}
 
-	public Ajedrez getAjedrez() {
-		return getAjedrez();
-	}
-
-	public String getNombre() {
-		return super.getNombre();
-	}
-
-	public ArrayList<Pieza> getPiezas() {
-		return super.getPiezas();
-	}
-	public void setTablero(TableroGrafico tableroGrafico) {
-		tableroGrafico.addIJugadorListener(this);
-	}
-	
 	@Override
-	public void botonApretado(int fila, int columan) {
+	public Jugada jugar() {
+		// TODO [CORRECCION] No se gastarn en nada para generar un Equpio Intelitente,
+		// hace exactamente lo mismo que "equipo"
+		this.jugadaConPrioridad = null; // atributo para determinar una jugada proiritaria
 		
+		ArrayList<Jugada> jugadas = new ArrayList<Jugada>();
+		this.limpiarJugadasConPrioridad();
+
+	
+		for (Jugada j : this.calcularJugadsPosibles()) {
+			jugadas.add(j);
+		}
+		int i = jugadas.size();
+		System.out.println("Cantidad de movimientos posibles: " + i);
+		Random random = new Random();
+		
+		
+		if (this.getJugadasConPrioridad().size() > 0) {
+			
+			for (Jugada jugada : this.getJugadasConPrioridad()) {
+				int filaEnemiga = jugada.getFila();
+				int columnaEnemiga = jugada.getColumna();
+				Celda cEnemiga;
+				try {
+					cEnemiga = this.getAjedrez().getTablero().getCelda(filaEnemiga, columnaEnemiga);
+					Pieza pEnemiga = this.getAjedrez().getTablero().getCelda(filaEnemiga, columnaEnemiga).getPieza();
+					setJugadaConPrioridad(cEnemiga, pEnemiga, jugada.getPieza());
+				} catch (FueraDeTableroException e) {
+					System.out.println("Movimiento Fuera de tablero");
+				}
+			}
+			// Tenemos posibles piezas enemigas que se pueden comer
+			Esperar.esprerar(); 
+			return this.jugadaConPrioridad;
+
+		} else {
+			int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y la cantidad
+			Esperar.esprerar(); 
+			return jugadas.get(movimientoRandom); // devuelvo la jugada;
+		}
 	}
 
 }

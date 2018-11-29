@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import excepciones.FueraDeTableroException;
-import grafica.TableroGrafico;
+import grafica.TableroGui;
 import grafica.VentanaPrincipal;
 import pieza.Pieza;
 /**
@@ -14,18 +14,12 @@ import pieza.Pieza;
  *
  */
 public class Prueba {
-
 	public static void main(String[] args)  {
 		Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
-		TableroGrafico tableroGui =new TableroGrafico();
+		TableroGui tableroGui =new TableroGui();
 		VentanaPrincipal ventanaPrincipal= new VentanaPrincipal(tableroGui);
-		//Ajedrez.getSingletoneInstancia().getBlancas().setTablero(tableroGui);
-	//	Ajedrez.getSingletoneInstancia().getNegras().setTablero(tableroGui);
 		ventanaPrincipal.setVisible(true);
-		ventanaPrincipal.setVentanaPrincipal(ajedrez);
+		ventanaPrincipal.setAjedrez(ajedrez);
 		ventanaPrincipal.setResizable(false);
-		
-		
 	}
-
 }

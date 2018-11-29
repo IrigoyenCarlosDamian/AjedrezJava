@@ -3,12 +3,15 @@ package ajedrez;
 import interfaces.IJuegoListener;
 import util.Esperar;
 import java.util.ArrayList;
+
+import equipos.EquipoHumano;
 import excepciones.FueraDeTableroException;
 import pieza.*;
 
 /**
- * Clase administrador de juego, es la encargada de crear, controlar, y mostrar todo lo relacionado al 
- * 	juego
+ * Clase administrador de juego, es la encargada de crear, controlar, y mostrar
+ * todo lo relacionado al juego
+ * 
  * @author carlos
  */
 public class Ajedrez {
@@ -24,85 +27,86 @@ public class Ajedrez {
 	private Ajedrez() {
 		this.juegoListener = new ArrayList<IJuegoListener>();
 	}
+
 	/**
 	 * devuelve la instancia de AdministradorJuego
+	 * 
 	 * @return
 	 */
 	public static Ajedrez getSingletoneInstancia() {
 
 		return instancia;
 	}
-	/** 
-	 * @author carlos
-	 * @param Inicializa El tablero, se crea el tablero y los equipos
+
+	/**
 	 * 
+	 * metodo que se encargara iniciar el tablero y los equipos
+	 * @param equipo1 es el equipo con las pizas blancas
+	 * @param equipo2 es el equipo con las piezas negras  
 	 */
-	public void inicarJuego(Equipo equipo1,Equipo equipo2) {
+	public void inicarJuego(Equipo equipo1, Equipo equipo2) {
 		this.tablero = new Tablero();
-		this.blancas=equipo1;
-		this.negras=equipo2; 
+		this.blancas = equipo1;
+		this.negras = equipo2;
 		this.tablero.crear();
 		try {
 			crearPiezasEnTablero();
 		} catch (FueraDeTableroException e) {
+			// TODO [CORRECCION] Si da una exception no hacen nada?
+			e.getMessage("te estas llendo del tablero");
 		}
+		/**
+		 * Notifico al escuhador de que se inicio el juego 
+		 */
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.JuegoIniciado();
 		}
-		mostrarTablero();
 
 	}
 
+
+
 	/**
+	 * Metodo que da inicio al Juego 
 	 * 
-	 * @param equipo
-	 * @param tablero
-	 * @throws FueraDeTableroException excepcion que se larga si la celda de destino es una indice  invalido del array 
-	 *  Gestiona los turnos de los equipos duarante la partida 
-	 */
-	public void darTurnos(Equipo equipo, Tablero tablero) throws FueraDeTableroException {
-
-		for (IJuegoListener escuchador : juegoListener) {
-			escuchador.turnoActual(equipo);
-		}
-		setEquipoEnTurno(equipo);
-		Jugada jugada = equipo.jugar();
-		//Celda mov = tablero.getCelda(jugada.getFila(), jugada.getColumna());// tira excepcion Fuera de tablero, pero no deberia salir del tablero
-		tablero.mover(jugada.getPieza(), jugada.getFila(), jugada.getColumna());
-		mostrarTablero();
-	}
-	/**
-	 * Muestra el tablero en consola (las Piezas se representan mediante caracteres)
-	 */
-
-	public void mostrarTablero() {
-
-		System.out.print(this.tablero);
-
-	}
-
-	/**
-	 * 
-	 * @throws FueraDeTableroException
-	 *  Cominza la partida de ajedrez
+	 * @throws FueraDeTableroException excepcion que se larga si la celda de destino es una indice invalido del array
 	 */
 	public void comenzar() throws FueraDeTableroException {
 
 		while (!this.esFinJuego(blancas, negras)) {
-			darTurnos(this.blancas, tablero);// Tira excepcion Fuera de tablero (getCelda de Tablero)
+			darTurnos(this.blancas);// Tira excepcion Fuera de tablero (getCelda de Tablero)
 			if (!this.esFinJuego(negras, blancas)) {// Tira excepcion Fuera de tablero (getCelda de Tablero)
-				darTurnos(this.negras, tablero);
+				darTurnos(this.negras);
 			}
 		}
-		// Se termnino la partida 
+		
+		// Se termnino la partida
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.juegoFinalizado();
+		}
+	}
+	
+	/**
+	 * Gestiona los turnos de los equipos duarante la partida
+	 * @param equipo
+	 * @throws FueraDeTableroException excepcion que se larga si la celda de destino es una indice invalido del array 
+	 */
+	public void darTurnos(Equipo equipo) throws FueraDeTableroException {
+		for (IJuegoListener escuchador : juegoListener) {
+			escuchador.turnoActual(equipo);
+		}
+
+		setEquipoEnTurno(equipo);
+		Jugada jugada = equipo.jugar();
+		tablero.mover(jugada.getPieza(), jugada.getFila(), jugada.getColumna());
+		if (!(equipo instanceof EquipoHumano)) {
+			Esperar.esprerar();
 		}
 	}
 
 	private boolean esFinJuego(Equipo equipoEnTurno, Equipo equipoEnemigo) {
 
-		if (equipoEnTurno.getRey().getEstaViva()  && equipoEnemigo.getRey().getEstaViva()) {
+		if (equipoEnTurno.getRey().getEstaViva() && equipoEnemigo.getRey().getEstaViva()) {
 			int i = 0;
 			Pieza rey = equipoEnTurno.getRey();
 			i = this.getTablero().quienesMatan(rey).size();
@@ -112,7 +116,7 @@ public class Ajedrez {
 				}
 
 			}
-			
+
 			return false;
 		}
 		for (IJuegoListener escuchador : juegoListener) {
@@ -123,16 +127,15 @@ public class Ajedrez {
 
 	/*
 	 * 
-	 * @return
-	 * Retorna la instancia de  tablero 
+	 * @return Retorna la instancia de tablero
 	 */
 	public Tablero getTablero() {
 		return this.tablero;
 	}
+
 	/**
-	 * 
-	 * @throws FueraDeTableroException
-	 * Crea las piezas en el tablero de ajedrez
+	 * Metodo encargado de  Crea las piezas en el tablero de ajedrez
+	 * @throws FueraDeTableroException excepcion que se larga si la celda de destino es una indice invalido del array
 	 */
 	public void crearPiezasEnTablero() throws FueraDeTableroException {
 
@@ -199,24 +202,16 @@ public class Ajedrez {
 					} else {
 						negras.getPiezas().add(p);
 					}
-					// p.addPiezaListener(this.tableroGui);
 				}
-
-				// Se agrega como escuchador Tablero
-				// p.addPiezaListener(tableroGui);
-
-				this.tablero.celda[i][j].setPieza(p);
+				this.tablero.getCelda()[i][j].setPieza(p);
 			}
-
 		}
-
 	}
 
 	/**
-	 * 
-	 * @param equipo
-	 * @return
-	 * Dado un equipo pasado por parameto devuelve el equipo contrario 
+	 * Metodo  que recibe como argumento un equipo y devuelve el equipo contrario
+	 * @param equipo equipo del que queremos conocer su rival 
+	 * @return Dado un equipo pasado por parameto devuelve el equipo contrario
 	 */
 	public Equipo getEquipoContrario(Equipo equipo) {
 
@@ -226,33 +221,55 @@ public class Ajedrez {
 			return blancas;
 		}
 	}
-
-	
+	/**
+	 * notifica al escuhador que la pieza pasada por paramete
+	 * @param p pieza que  fue comida 
+	 * 
+	 */
+	public void piezaEliminada(Pieza p) {
+		for (IJuegoListener escuchador : juegoListener) {
+			escuchador.piezaComida(p);
+		}
+	}
+	/**
+	 * 
+	 * @return Retrona el equipo blanco 
+	 */
 	public Equipo getBlancas() {
 		return blancas;
 	}
-
+	/**
+	 * 
+	 * @return Retorna el equipo negro 
+	 */
 	public Equipo getNegras() {
 		return negras;
 	}
-	
-	
-
+	/**
+	 * 
+	 * @return Retorna el equipo que tiene el turno actul 
+	 */
 	public Equipo getEquipoEnTurno() {
 		return equipoEnTurno;
 	}
+
 	public void setEquipoEnTurno(Equipo equipoEnTurno) {
 		this.equipoEnTurno = equipoEnTurno;
 	}
-	
+
 	public void setBlancas(Equipo blancas) {
 		this.blancas = blancas;
 	}
+
 	public void setNegras(Equipo negras) {
 		this.negras = negras;
 	}
+
+	/**
+	 * Agrega  al escuhador al array 
+	 * @param listener clase que implementa la interfas IJuegoListener
+	 */
 	public void addJuegoListener(IJuegoListener listener) {
 		this.juegoListener.add(listener);
 	}
-
 }

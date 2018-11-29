@@ -15,7 +15,7 @@ public class Peon extends Pieza {
 
 	public Peon(Celda celda, Equipo equipo) {
 		super(celda, equipo);
-		super.setPuntos(1);
+		this.setPuntos(1);
 	}
 
 	/* Metodos */
@@ -26,13 +26,13 @@ public class Peon extends Pieza {
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		boolean sePuede = true;
-		Equipo blancas= new Equipo(Ajedrez.getSingletoneInstancia().BLANCA);
+		String blancas= Ajedrez.getSingletoneInstancia().BLANCA;
 		Tablero tablero = this.getTablero();// Tramos al tablero
 		
 		Celda celdaActual = this.getCelda();// Celda origen donde esta la pieza actualmente
 		Celda mov = new Celda(0, 0);// Celda a la que se mueve el Peon
 		int movimientoNormal, primerMovimiento,filaInicial;
-		if (this.getEquipo().equals(blancas)) {
+		if (this.getEquipo().getNombre()==blancas) {
 			primerMovimiento = -2;
 			movimientoNormal = -1;
 			filaInicial = 6;
@@ -94,7 +94,7 @@ public class Peon extends Pieza {
 
 			} catch (PiezaEnemigaException e) {
 
-				this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con Prioridad
+				this.getEquipo().agregarJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con Prioridad
 
 				listaCelda.add(mov);
 			}
@@ -114,7 +114,7 @@ public class Peon extends Pieza {
 
 			} catch (PiezaEnemigaException e) {
 
-				this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
+				this.getEquipo().agregarJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
 																					// Prioridad
 
 				listaCelda.add(mov);

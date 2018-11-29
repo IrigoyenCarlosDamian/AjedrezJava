@@ -14,7 +14,7 @@ public class Torre extends Pieza {
 
 	public Torre(Celda celda, Equipo equipo) {
 		super(celda, equipo);
-		super.setPuntos(5);
+		this.setPuntos(5);
 	}
 
 	/* Metodos */
@@ -25,11 +25,11 @@ public class Torre extends Pieza {
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();
 		Celda c = this.getCelda();// Celda origen donde esta la pieza actualmente
-		Tablero tablero = getTablero(); // traemos el tablero
-		movimiento(c, tablero, listaCelda, -1, 0); // NORTE
-		movimiento(c, tablero, listaCelda, +1, 0); // SUR
-		movimiento(c, tablero, listaCelda, 0, +1); // ESTE
-		movimiento(c, tablero, listaCelda, 0, -1); // OESTE
+		
+		movimiento(c, listaCelda, -1, 0); // NORTE
+		movimiento(c, listaCelda, +1, 0); // SUR
+		movimiento(c, listaCelda, 0, +1); // ESTE
+		movimiento(c, listaCelda, 0, -1); // OESTE
 
 		return listaCelda;
 	}
@@ -47,12 +47,12 @@ public class Torre extends Pieza {
 		significa movimiento ESTE si en columna viene un -1 y fila 0 significa
 	    movimiento OESTE
 	 */
-	private void movimiento(Celda c, Tablero tablero, ArrayList<Celda> listaCelda, int fila, int columna) {
+	private void movimiento(Celda c, ArrayList<Celda> listaCelda, int fila, int columna) {
 		boolean sePuede = true;
 		Celda mov = new Celda(0, 0);
 		while (sePuede) {
 			try {
-				mov = tablero.getCelda(c.getFila() + fila, c.getColumna() + columna);// Celda a donde se avanza
+				mov = this.getTablero().getCelda(c.getFila() + fila, c.getColumna() + columna);// Celda a donde se avanza
 				try {
 					if (mov.puedeIngresar(this)) {// Unicamente devuelve verdad si esta vacia la celda
 						listaCelda.add(mov);
@@ -62,7 +62,7 @@ public class Torre extends Pieza {
 				} catch (PiezaEnemigaException e1) {
 					listaCelda.add(mov);
 
-					this.getEquipo().setJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
+					this.getEquipo().agregarJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
 																						// Prioridad
 
 					sePuede = false; // Se termina la trayectoria a esa direccion

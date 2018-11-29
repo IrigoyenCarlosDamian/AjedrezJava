@@ -12,6 +12,8 @@ public class Jugada {
 	private int fila;
 	private int columna;
 
+	//TODO [CORRECCION] Falta documetacion de todos los metodos
+	
 	/* Constructores */
 	public Jugada() {
 

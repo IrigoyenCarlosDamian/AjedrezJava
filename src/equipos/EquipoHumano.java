@@ -9,21 +9,24 @@ import ajedrez.Equipo;
 import ajedrez.Jugada;
 import ajedrez.Tablero;
 import excepciones.FueraDeTableroException;
-import grafica.TableroGrafico;
+import grafica.TableroGui;
+import interfaces.IJugador;
 import pieza.Pieza;
+
 /**
- * Clase Equipo Humano viene definida por un nombre implemneta action performand para el movimiento de las piezas 
+ * Clase Equipo Humano viene definida por un nombre implemneta action performand
+ * para el movimiento de las piezas
+ * 
  * @author Carlos
  *
  */
-public class EquipoHumano extends Equipo {
-
+public class EquipoHumano extends Equipo implements IJugador {
 
 	private boolean segundoClick;
 	private ArrayList<Celda> listaMov;
 	private Pieza pieza;
 	private Jugada jugada;
-	private boolean esFinDeTurno;	
+	private boolean esFinDeTurno;
 
 	public EquipoHumano(String nombre) {
 		super(nombre);
@@ -32,27 +35,9 @@ public class EquipoHumano extends Equipo {
 		this.esFinDeTurno = false;
 	}
 
-	@Override
 	/**
-	 *  implementeta una espera de medio segundo para la accion de boton 
-	 */
-	public Jugada jugar() {
-		
-		while (!isEsFinDeTurno()) {
-			//Se espera el movimiento
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
-		}
-		setEsFinDeTurno(false);
-		return getJugada();
-	}
-
-
-	@Override
-	/**
-	 *  dada una fila y columna enviada por parametro sete la pieza en la celda correspondiente dentro del tablero grafico
+	 * dada una fila y columna enviada por parametro sete la pieza en la celda
+	 * correspondiente dentro del tablero grafico
 	 */
 	public void botonApretado(int fila, int columna) {
 		Tablero tablero = Ajedrez.getSingletoneInstancia().getTablero();
@@ -62,7 +47,7 @@ public class EquipoHumano extends Equipo {
 				for (Celda celda : listaMov) {
 					if ((celda.getFila() == fila) && (celda.getColumna() == columna)) {
 						setJugada(new Jugada(getPieza(), celda.getFila(), celda.getColumna()));
-						//tablero.mover(getPieza(), fila, columna);
+						// tablero.mover(getPieza(), fila, columna);
 						setSegundoClick(false);
 						setEsFinDeTurno(true);
 						return;
@@ -77,6 +62,7 @@ public class EquipoHumano extends Equipo {
 					equipoEnTurno = getPieza().getEquipo().getNombre() == jugadorEnTurno.getNombre();
 				} catch (FueraDeTableroException e) {
 				}
+				
 				if (hayPieza && equipoEnTurno) {
 					setListaMov(pieza.getMovimientosPosibles());
 					if (getListaMov().size() < 1) {
@@ -97,6 +83,7 @@ public class EquipoHumano extends Equipo {
 	public void setSegundoClick(boolean segundoClick) {
 		this.segundoClick = segundoClick;
 	}
+
 	public String getNombre() {
 		return super.getNombre();
 	}
@@ -116,11 +103,11 @@ public class EquipoHumano extends Equipo {
 	public void setPieza(Pieza pieza) {
 		this.pieza = pieza;
 	}
-	
-	public void setTablero (TableroGrafico tableroSignificativo) {
-		tableroSignificativo.addIJugadorListener(this);		
+
+	public void setTablero(TableroGui tableroSignificativo) {
+		tableroSignificativo.addIJugadorListener(this);
 	}
-	
+
 	public Jugada getJugada() {
 		return jugada;
 	}
@@ -136,5 +123,22 @@ public class EquipoHumano extends Equipo {
 	public void setEsFinDeTurno(boolean esFinDeTurno) {
 		this.esFinDeTurno = esFinDeTurno;
 	}
-	
+
+	@Override
+	/**
+	 * implementeta una espera de medio segundo para la accion de boton
+	 */
+	public Jugada jugar() {
+		while (!isEsFinDeTurno()) {
+			// Se espera el movimiento
+			try {
+				Thread.sleep(500);
+				
+			} catch (InterruptedException e) {
+			}
+		}
+		setEsFinDeTurno(false);
+		return getJugada();
+	}
+
 }
