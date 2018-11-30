@@ -3,6 +3,7 @@ package ajedrez;
 
 import pieza.Pieza;
 /**
+ * Clase que implemmenta la jugada de un equipa 
  * Una jugada viene dada por una  pieza,una fila y una columna 
  * @author Carlos
  *
@@ -12,8 +13,6 @@ public class Jugada {
 	private int fila;
 	private int columna;
 
-	//TODO [CORRECCION] Falta documetacion de todos los metodos
-	
 	/* Constructores */
 	public Jugada() {
 
@@ -25,7 +24,10 @@ public class Jugada {
 		this.columna = columna;
 	}
 	/* Geters y Seters */
-
+	/**
+	 * 
+	 * @return Devuelve una peiza 
+	 */
 	public Pieza getPieza(){
 		return pieza;
 	}
@@ -33,7 +35,10 @@ public class Jugada {
 	public void setPieza(Pieza pieza) {
 		this.pieza = pieza;
 	}
-
+	/**
+	 * 
+	 * @return Retorna la fila correspondiente a una celda 
+	 */
 	public int getFila() {
 		return fila;
 	}
@@ -41,7 +46,10 @@ public class Jugada {
 	public void setFila(int fila) {
 		this.fila = fila;
 	}
-
+	/**
+	 * 
+	 * @return Retorna la Columana correspondiente a una celda 
+	 */
 	public int getColumna() {
 		return columna;
 	}

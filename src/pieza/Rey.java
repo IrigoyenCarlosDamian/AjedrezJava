@@ -35,15 +35,21 @@ public class Rey extends Pieza {
 		movimiento(c, listaCelda, -1, -1); // NOR-OESTE
 		return listaCelda;
 	}
-
+	/**
+	 * 
+	 * @param c es la celda en la que se encuentra actualmente el rey
+	 * @param listaCelda son todas las celdas posibles a las que piede ir el rey
+	 * @param fila es una fila probable a la que el rey puede ir 
+	 * @param columna es una columna probable a la que el rey puede ir 
+	 *  Se enlistan las celdas posibles segun los movimientos d la torre si en fila
+	 * viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
+	 * culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
+	 * significa movimiento ESTE si en columna viene un -1 y fila 0 significa
+	 * movimiento OESTE	 
+	 */
+	
 	private void movimiento(Celda c, ArrayList<Celda> listaCelda, int fila, int columna) {
-		/*
-		 * Se enlistan las celdas posibles segun los movimientos d la torre si en fila
-		 * viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
-		 * culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
-		 * significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-		 * movimiento OESTE
-		 */
+		
 
 		Celda mov = new Celda(0, 0);
 		try {

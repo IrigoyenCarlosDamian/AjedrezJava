@@ -18,13 +18,14 @@ import util.Esperar;
 /**
  * El equipo se crea con un nombre su array de piezas correspondiente y
  * referencia a Ajedrez efectua sus movimientos priorizando comer las piezas del
- * equipo contrario
+ * equipo contrario con el puntaje mas alto
  * 
  * @author Carlos
  *
  */
 public class EquipoMaster extends Equipo {
-	private Jugada jugadaConPrioridad;
+	private Jugada jugadaConPrioridad; // jugada con prioridad De equipo master para priorizar comer la pieza de mayor
+										// puntaje
 
 	/* Construcotres */
 	public EquipoMaster(String nombre) {
@@ -36,14 +37,15 @@ public class EquipoMaster extends Equipo {
 	/* Geters y Seters */
 
 	/**
+	 * Metodo Que setea la jugada con prioridad del Equipo master Jugada con
+	 * Prioridad es una jugada donde se puede comer una pieza Si hay una jugada
+	 * existente se comparan los ptjes de las piezas La jugada con Prioridad siempre
+	 * tendra la pEemiga con mayor puntaje
 	 * 
 	 * @param c es la celda a donde esta la pieza enemiga
-	 * @param pEnemiga es la pieza Enemiga 
-	 * @param pAliada  
-	 * Jugada con Prioridad es una jugada donde se puede comer una es la pieza que va a
-	 * realizar la jugada Si hay una jugada existente se comparan
-	 * los ptjes de las piezas La jugada con Prioridad siempre
-	 * tendra la pEemiga con mayor puntaje
+	 * @param pEnemiga es la pieza Enemiga de la cual se ve su puntaje
+	 * @param pAliada  es la pieza que va a realizar la jugada
+	 * 
 	 */
 
 	public void setJugadaConPrioridad(Celda c, Pieza pEnemiga, Pieza pAliada) {
@@ -69,24 +71,20 @@ public class EquipoMaster extends Equipo {
 
 	@Override
 	public Jugada jugar() {
-		// TODO [CORRECCION] No se gastarn en nada para generar un Equpio Intelitente,
-		// hace exactamente lo mismo que "equipo"
-		this.jugadaConPrioridad = null; // atributo para determinar una jugada proiritaria
-		
-		ArrayList<Jugada> jugadas = new ArrayList<Jugada>();
-		this.limpiarJugadasConPrioridad();
 
-	
-		for (Jugada j : this.calcularJugadsPosibles()) {
+		this.jugadaConPrioridad = null; // atributo para determinar una jugada proiritaria al inicio de la jugada es
+										// null
+
+		ArrayList<Jugada> jugadas = new ArrayList<Jugada>(); // array de jugadas de Equipo Master
+		this.limpiarJugadasConPrioridad();
+		for (Jugada j : this.calcularJugadsPosibles()) { // calculo las jugadas posibles del equipo
 			jugadas.add(j);
 		}
-		int i = jugadas.size();
-		System.out.println("Cantidad de movimientos posibles: " + i);
+		
 		Random random = new Random();
 		
-		
-		if (this.getJugadasConPrioridad().size() > 0) {
-			
+		if (this.getJugadasConPrioridad().size() > 0) { // si existe una jugada con prioriada[en la que puede comer]
+
 			for (Jugada jugada : this.getJugadasConPrioridad()) {
 				int filaEnemiga = jugada.getFila();
 				int columnaEnemiga = jugada.getColumna();
@@ -100,12 +98,13 @@ public class EquipoMaster extends Equipo {
 				}
 			}
 			// Tenemos posibles piezas enemigas que se pueden comer
-			Esperar.esprerar(); 
+			Esperar.esprerar(); // delay de 2 segundos para ver bien los movimientos de las piezas
 			return this.jugadaConPrioridad;
 
-		} else {
-			int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y la cantidad
-			Esperar.esprerar(); 
+		} else { // sino existen jugadas en las quese puede comer 
+			int movimientoRandom = random.nextInt(jugadas.size()); // elegimos un movimiento al azar entre 0 y la
+																	// cantidad de jugadas posibles 
+			Esperar.esprerar(); //delay de 2 segundos para poder ver bn los movimientos de las piezas 
 			return jugadas.get(movimientoRandom); // devuelvo la jugada;
 		}
 	}

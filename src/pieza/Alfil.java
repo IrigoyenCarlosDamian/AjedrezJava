@@ -39,20 +39,17 @@ public class Alfil extends Pieza {
 		return listaCelda;
 	}
 
-	//TODO [CORRECCION] Mal documentado
 	/**
+	 * @param c es la celda acutal en la que se encuentra el alfil 
+	 * @param listaCelda es una arrayList con todas las celdas posibles a las que puede ir el alfil 
+	 * @param fila  es la fila actual del alfil
+	 * @param columna es la columna actual del alfil 
 	 * 
-	 * @param c
-	 * @param tablero
-	 * @param listaCelda
-	 * @param fila
-	 * @param columna
 	 * 	  Se enlistan las celdas posibles segun los movimientos del  alfil si en fila
 		  viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
 		  culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
 		  significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-		  movimiento OESTE
-		  
+		  movimiento OESTE		  
 	*/
 	private void movimiento(Celda c,ArrayList<Celda> listaCelda, int fila, int columna) {
 		

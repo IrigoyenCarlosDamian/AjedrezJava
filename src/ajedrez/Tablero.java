@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import pieza.*;
 
 /**
+ * Clase Que define el tablero de ajedres 
  * El Tablero esta comuesto por un array bidimensional de celdas
  * 
  * @author Carlos
@@ -20,7 +21,7 @@ public class Tablero {
 	}
 
 	/**
-	 * Se crea el tablero con sus celdas
+	 * Metodo que se encarga de crea el tablero 
 	 */
 	public void crear() {
 		for (int i = 0; i < 8; i++) {
@@ -33,11 +34,12 @@ public class Tablero {
 	}
 
 	/**
+	 * Dada una fila y una columna pasada por parame
+	 * @param fila valor entero entre 0 y 7 
+	 * @param columna valor entero entre 0 y 7
+	 * @throws FueraDeTableroException cuando la fila y/o columna pasada por parameto no corresponde a una valida se lanza la excepcion 
+	 * @return Retorna una celda del tablero 
 	 * 
-	 * @param fila
-	 * @param columna
-	 * @return
-	 * @throws FueraDeTableroException Retorna una celda;
 	 */
 	public Celda getCelda(int fila, int columna) throws FueraDeTableroException {
 
@@ -49,11 +51,11 @@ public class Tablero {
 	}
 
 	/**
-	 * mueve la pieza que se manda por parametro a la fila y columna que se envia
+	 * mueve la pieza que se manda por parametro a la fila y columna que se envian
 	 * 
-	 * @param pieza
-	 * @param fila
-	 * @param columna
+	 * @param pieza es la pieza que va a ser movida en el tablero
+	 * @param fila es la fila destino de la pieza enviada por parametro
+	 * @param columna es la columna destion de la pieza  enviada por parametro 
 	 */
 
 	public void mover(Pieza pieza, int fila, int columna) {
@@ -71,33 +73,31 @@ public class Tablero {
 
 	/**
 	 * Dada una pieza enviada por parameto retorana un ArrayList de las piezas capaz
-	 * de comer a la pieza enviada por parametro
-	 * 
-	 * @param pieza
-	 * @return
+	 * de comer a dicha pieza 
+	 * @param pieza  es la pieza de la cual se quiere evaluar si existen piezas del equipo contrario que son capaces de comerla 
+	 * @return devevuele losMatones[ArrayList con las piezas que puede comer a la pieza enviada ]
 	 */
 	public ArrayList<Pieza> quienesMatan(Pieza pieza) {
-		// no se saben bien que hacen
-		ArrayList<Pieza> losMatones = new ArrayList<Pieza>();
-		int filaAliada = pieza.getCelda().getFila();
-		int columnaAliada = pieza.getCelda().getColumna();
-		Equipo equipoEnemigo = Ajedrez.getSingletoneInstancia().getEquipoContrario(pieza.getEquipo());
+		ArrayList<Pieza> losMatones = new ArrayList<Pieza>(); // defino un arrayList de piezas para verificar posibles piezas que puede comer a la enviada por parametro 
+		int filaAliada = pieza.getCelda().getFila(); // obtengo la fila de la pieza que me envian 
+		int columnaAliada = pieza.getCelda().getColumna(); // obtengo la columna de la pieza que me envian 
+		Equipo equipoEnemigo = Ajedrez.getSingletoneInstancia().getEquipoContrario(pieza.getEquipo()); // obtengo el equipo contario al de la pieza que me envian 
 
 		for (Pieza piezaEnemiga : equipoEnemigo.getPiezas()) {
 			if (piezaEnemiga.getEstaViva() == true) {
 
-				for (Celda celdaEnemiga : piezaEnemiga.getMovimientosPosibles()) {
-					int filaEnemiga = celdaEnemiga.getFila();
-					int columnaEnemiga = celdaEnemiga.getColumna();
-					if ((filaEnemiga == filaAliada) && (columnaEnemiga == columnaAliada)) {
-						// La piezaEnemiga puede comer a la Aliada
-						losMatones.add(piezaEnemiga);
+				for (Celda celdaEnemiga : piezaEnemiga.getMovimientosPosibles()) { // del equipo enemigo calculo las jugadas posibles
+					int filaEnemiga = celdaEnemiga.getFila(); //  obtengo la fila de un movimiento posible
+					int columnaEnemiga = celdaEnemiga.getColumna(); // obtengo la columna de un movimiento posible 
+					if ((filaEnemiga == filaAliada) && (columnaEnemiga == columnaAliada)) { // si la fila y columa de la pieza alida es igual a la de un movimientoPosible
+																							//del equipo contrario la piezaEnemiga puede comer a la pieza aliada 
+						losMatones.add(piezaEnemiga); // agrego la pieza al arrayList
 					}
 				}
 			}
 		}
 
-		return losMatones; // aqui devuelvo la pieza que matan
+		return losMatones; // aqui devuelvo la pieza que pueden matar a la pieza 
 	}
 
 	/**
@@ -111,7 +111,10 @@ public class Tablero {
 		}
 
 	}
-
+	/**
+	 * 
+	 * @return Retorna una celda del tablero 
+	 */
 	public Celda[][] getCelda() {
 		return this.celda;
 	}

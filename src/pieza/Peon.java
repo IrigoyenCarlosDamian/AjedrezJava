@@ -33,11 +33,11 @@ public class Peon extends Pieza {
 		Celda mov = new Celda(0, 0);// Celda a la que se mueve el Peon
 		int movimientoNormal, primerMovimiento,filaInicial;
 		if (this.getEquipo().getNombre()==blancas) {
-			primerMovimiento = -2;
+			primerMovimiento = -2; // si el equipo es el de las piezas blancas se decrementa
 			movimientoNormal = -1;
 			filaInicial = 6;
 		} else {
-			primerMovimiento = 2;
+			primerMovimiento = 2; // si el equipo es el de las piezas negras se incrementa 
 			movimientoNormal = 1;
 			filaInicial = 1;
 		}
@@ -107,21 +107,19 @@ public class Peon extends Pieza {
 			mov = tablero.getCelda(celdaActual.getFila() + movimientoNormal, celdaActual.getColumna() - 1);
 			try {
 				if (mov.puedeIngresar(this)) {
-					// System.out.println("No hay enemigo");
+					
 				}
 			} catch (PiezaAliadaException e) {// No puede ingresar
-				// System.out.println("Pieza aliada en celda no se puede ingresar");
 
 			} catch (PiezaEnemigaException e) {
 
 				this.getEquipo().agregarJugadaConPrioridad(mov, mov.getPieza(), this);// Se genera una jugada con
 																					// Prioridad
-
 				listaCelda.add(mov);
 			}
 
 		} catch (FueraDeTableroException e) {
-			// TODO: handle exception
+		
 		}
 
 		return listaCelda;

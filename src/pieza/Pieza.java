@@ -9,7 +9,7 @@ import ajedrez.Equipo;
 
 /**
  * Clase Abstracta para la jerarquia de las piezas una piesa viene dada por una
- * celda y un equipo
+ * celda un equipo y un puntaje 
  * 
  * @author Carlos
  *
@@ -59,7 +59,9 @@ public abstract class Pieza {
 
 		this.celda = celda;
 	}
-
+	/*
+	 * Retorna los puntos correspondientes a una pieza 
+	 */
 	public int getPuntos() {
 		return this.puntos;
 	}
@@ -67,11 +69,17 @@ public abstract class Pieza {
 	public void setPuntos(int ptos) {
 		this.puntos = ptos;
 	}
-
+	/**
+	 * 
+	 * @return Retorna el  equipo de una pieza 
+	 */
 	public Equipo getEquipo() {
 		return this.equipo;
 	}
-
+	/**
+	 * 
+	 * @return si una piesa esta viva o  no 
+	 */
 	public boolean getEstaViva() {
 		return this.estaViva;
 	}

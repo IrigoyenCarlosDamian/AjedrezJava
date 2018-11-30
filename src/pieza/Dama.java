@@ -43,12 +43,17 @@ public class Dama extends Pieza {
 	}
 
 	/**
-	 *   Se enlistan las celdas posibles segun los movimientos d la torre si en fila
+	 * 
+	 * @param c es la celda acutal en la quese encuentra la dama
+	 * @param listaCelda ArrayList  con las celdas posibles al a que puede ir la dama 
+	 * @param fila  fila con la que es llamado el metodo movimento
+	 * @param columna columan con la que es llamdo el metodo movimiento 
+	 *  Se enlistan las celdas posibles segun los movimientos d la dama si en fila
 	 	 viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
 	 	 culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
 	 	 significa movimiento ESTE si en columna viene un -1 y fila 0 significa
 	 	 movimiento OESTE
-	  */
+	 */
 	
 	private void movimiento(Celda c, ArrayList<Celda> listaCelda, int fila, int columna) {
 		

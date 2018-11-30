@@ -36,11 +36,10 @@ public class Torre extends Pieza {
 		
 	/**
 	 * 
-	 * @param c
-	 * @param tablero
-	 * @param listaCelda
-	 * @param fila
-	 * @param columna
+	 * @param c es la celda en la que esta actualmente la torre 
+	 * @param listaCelda son todas las celdas a la que puede llegar a ir  la torre 
+	 * @param fila es una fila probable a la que la torre puede ir 
+	 * @param columna es una columna prova a la que la torre puede ir
 	 *  Se enlistan las celdas posibles segun los movimientos d la torre si en fila
 	    viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
 		culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0

@@ -5,6 +5,10 @@ package util;
  */
 
 public class Esperar{
+	/**
+	 * metodo que implementa un deley de dos segundos[ es a fines de poder apreciar de mejor los movimientos de
+	 * las piezas en el tablero]
+	 */
 	  public static void esprerar(){
 	     System.out.println("\n");
 	     try{

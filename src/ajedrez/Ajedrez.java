@@ -52,7 +52,6 @@ public class Ajedrez {
 		try {
 			crearPiezasEnTablero();
 		} catch (FueraDeTableroException e) {
-			// TODO [CORRECCION] Si da una exception no hacen nada?
 			e.getMessage("te estas llendo del tablero");
 		}
 		/**

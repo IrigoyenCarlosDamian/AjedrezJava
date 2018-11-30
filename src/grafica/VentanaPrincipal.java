@@ -55,7 +55,11 @@ import java.awt.Image;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+/**
+ * Clase que contiene el frame de la aplicacion grafica 
+ * @author Carlos
+ *
+ */
 public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoListener {
 
 	private static int piezasVivasBlancas = 16;
@@ -74,7 +78,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 	private static TableroGui tableroGui;
 
 	/**
-	 * Create the frame.
+	 * Se crea el frame 
 	 */
 	public VentanaPrincipal(TableroGui tablero) {
 		this.tableroGui = tablero;
@@ -96,7 +100,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
-		// textArea.setBorder(new TitledBorder("Jugadas"));
 		textArea.setForeground(Color.BLACK);
 		turnoActual2 = new JButton("Equipo Blanca");
 		turnoActual2.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -170,7 +173,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 		personaContraPersona.addActionListener(this);
 
 	}
-
+	/**
+	 * Atiende los eventos de los botones del menu Bar 
+	 */
 	public void actionPerformed(ActionEvent evento) {
 		Runnable miRunnable = new Runnable() {
 			public void run() {
@@ -258,7 +263,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 		hilo.start();
 
 	}
-
+	/**
+	 * metodo que efectua un append en un textArea, muestra los movimiento que se efectuan en el tablero 
+	 * 
+	 * @param pieza pieza que efectuna el movimiento
+	 * @param celda celda destino de la pieza que es movida
+	 */
 	public static void movimientoDePiza(Pieza pieza, Celda celda) {
 		String movimiento;
 		movimiento = pieza.getClass().getSimpleName() + "(" + +celda.getFila() + "," + celda.getColumna() + ")\n";
@@ -271,11 +281,17 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 	}
 
 	@Override
+	/**
+	 * Muestra un menu de dialgo con el nombre del equipo que esta en jaques
+	 */
 	public void equipoEnJaque(Equipo equipo) {
 		JOptionPane.showMessageDialog(null, equipo.getNombre() + " esta en jaque");
 	}
 
 	@Override
+	/**
+	 * Colorea  de verde el boton correspondiente al equipo con el turno actual 
+	 */
 	public void turnoActual(Equipo equipo) {
 		if (equipo.getNombre() == Ajedrez.getSingletoneInstancia().BLANCA) {
 			turnoActual2.setBackground(Color.green);
@@ -287,21 +303,23 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 
 	}
 
-	// TODO [CORRECCION] Este metodo no puede ser static
+	
 
 	@Override
 	public void JuegoIniciado() {
-		// TODO Auto-generated method stub
-
+		textArea.append("JUEGO INICIADO\n");
 	}
 
 	@Override
 	public void juegoFinalizado() {
-		// TODO Auto-generated method stub
+		textArea.append("JUEGO FINALIZADO\n");
 
 	}
 
 	@Override
+	/**
+	 * muesta la cantidad de piezas vivas y piezas comidas de cada equipo 
+	 */
 	public void piezaComida(Pieza pieza) {
 		if (pieza.getEquipo().getNombre() == Ajedrez.getSingletoneInstancia().BLANCA) {
 			VentanaPrincipal.piezasVivasBlancas = VentanaPrincipal.piezasVivasBlancas - 1;

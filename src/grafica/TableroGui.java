@@ -33,11 +33,12 @@ public class TableroGui extends JPanel implements IPiezaListener {
 
 	private Container contents;// Contenedor de componentes que se emplearan para contruir la interfaz grafica
 	// del tablero
-	private BotonPresionado b = new BotonPresionado();
-	private JButton[][] cuadrados = new JButton[8][8];
-	private Color negro = Color.gray;
+	private BotonPresionado b = new BotonPresionado(); 
+	private JButton[][] cuadrados = new JButton[8][8]; // array de JButton[Representan Una Celda del tablero]
+	private Color negro = Color.gray; 
 	private ArrayList<IJugador> jugadores = new ArrayList<IJugador>();
-	/* Defino los inconos de las piezas */
+	
+	/* Definimos los inconos de las piezas */
 	private ImageIcon caballob = new ImageIcon("caballob.png");
 	private ImageIcon caballon = new ImageIcon("caballon.png");
 
@@ -169,7 +170,7 @@ public class TableroGui extends JPanel implements IPiezaListener {
 		/**En el primer click si hay una pieza entra en el segundo if En el segundo
 		 click se mueve la pieza 
 		 * @param i fila 
-		 * @param j comunas 
+		 * @param j columna 
 		 */
 		public void botonApretado(int i, int j) {
 			for(IJugador escuchador: jugadores) {
@@ -197,7 +198,7 @@ public class TableroGui extends JPanel implements IPiezaListener {
 	public void setPieza(Pieza piecitaSignificativa) {
 		piecitaSignificativa.addPiezaListener(this);
 	}
-
+	
 	public void addIJugadorListener(IJugador jugador) {
 		this.jugadores.add(jugador);
 	}

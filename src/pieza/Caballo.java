@@ -53,12 +53,12 @@ public class Caballo extends Pieza {
 	}
 	/**
 	 * 
-	 * @param mov
-	 * @param c
-	 * @param tablero
-	 * @param listaCelda
-	 * @param i
-	 * @param j
+	 * @param mov es la celda posible a la que puede ir el caballo 
+	 * @param c es la celda  actual del caballo 
+	 * @param listaCelda ArrayList con todas las pobiles celdas a la que puede ir el caballo 
+	 * @param i fila  es la posible fila  a la que se puede dirigir el caballo
+	 * (en el llamdo es a movimento es - si efecuta un movimeinto asia una columan anterioa a la que se encuentra)
+	 * @param j columna idem que en fila  
 	 * calulo las celdas posibles para el caballo 
 	 * 
 	 */

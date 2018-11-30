@@ -36,7 +36,7 @@ public class EquipoHumano extends Equipo implements IJugador {
 	}
 
 	/**
-	 * dada una fila y columna enviada por parametro sete la pieza en la celda
+	 * dada una fila y columna enviada por parametro setea la pieza en la celda
 	 * correspondiente dentro del tablero grafico
 	 */
 	public void botonApretado(int fila, int columna) {
