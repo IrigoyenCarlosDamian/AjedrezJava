@@ -21,7 +21,15 @@ public class Peon extends Pieza {
 	/* Metodos */
 	@Override
 	/**
-	 * Caluclo los movimientos posibles del peon en el turno de su equipo
+	 * 	Se calculan los movimientos posibles de la Pieza Peon:
+	 * 	Este metodo devuelve una lista de Celdas.
+	 * 	Esta lista contiene todas las celdas en las que se puede mover la Pieza Peon.
+	 * 	Segun la logica de movimiento del peon este puede moverse:
+	 * 	2 casillas hacia delante si es su primer movimiento. No puede comer con este movimiento.
+	 * 	1 casilla hacia adelante que es su movimiento normal. No puede comer con este movimiento.
+	 * 	1 casilla en diagonal delantera para poder comer. No puede moverse si no es para comer.
+	 * 	Si puede comer, ademas de enlistar en la lista que retorna, tambien agrega esta celda
+	 * 	en la lista de jugadas con prioridad del equipo.
 	 */
 	public ArrayList<Celda> getMovimientosPosibles() {
 		ArrayList<Celda> listaCelda = new ArrayList<Celda>();

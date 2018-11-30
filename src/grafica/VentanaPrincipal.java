@@ -39,6 +39,8 @@ import java.awt.Panel;
 
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+
 import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -55,8 +57,10 @@ import java.awt.Image;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
 /**
- * Clase que contiene el frame de la aplicacion grafica 
+ * Clase que contiene el frame de la aplicacion grafica
+ * 
  * @author Carlos
  *
  */
@@ -78,7 +82,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 	private static TableroGui tableroGui;
 
 	/**
-	 * Se crea el frame 
+	 * Se crea el frame
 	 */
 	public VentanaPrincipal(TableroGui tablero) {
 		this.tableroGui = tablero;
@@ -173,8 +177,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 		personaContraPersona.addActionListener(this);
 
 	}
+
 	/**
-	 * Atiende los eventos de los botones del menu Bar 
+	 * Atiende los eventos de los botones del menu Bar
 	 */
 	public void actionPerformed(ActionEvent evento) {
 		Runnable miRunnable = new Runnable() {
@@ -185,17 +190,26 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 					} else if (evento.getActionCommand() == "Acerca De") {
 						JOptionPane.showMessageDialog(null, "Integrantes: Irigoyen Carlos, Villanueva Alex");
 					} else if (evento.getActionCommand() == "Reinicar") {
+						Ajedrez.getSingletoneInstancia().setJuegoReiniciado(true);
 						dispose();
 						Prueba.main(null);
-
 					} else if (evento.getActionCommand() == "Cerrar") {
 						System.exit(0);
 					} else if (evento.getActionCommand() == "Maquina vs Maquina") {
+						textArea.append(null);
 						Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
-
-						int opcion = JOptionPane.showConfirmDialog(null, "Desea equipo Master?",
-								"Elija nivel de dificultad", JOptionPane.YES_NO_OPTION);
-						if (opcion == 0) {
+						
+						Image img = new ImageIcon("iconoAjedrez.png").getImage();
+						ImageIcon img2 = new ImageIcon(img.getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+						Object opcion = JOptionPane.showInputDialog(
+								   null,
+								   "Seleccione nivel de dificultad:",
+								   "Antes de comenzar a jugar...",
+								   JOptionPane.QUESTION_MESSAGE,
+								   img2,  // null para icono defecto
+								   new Object[] { "Nivel Ofensivo", "Nivel Master"}, 
+								   "Elija nivel de Diicultad");
+						if (opcion == "Nivel Master") {
 							Equipo equipo1 = new EquipoMaster(Ajedrez.BLANCA);
 							Equipo equipo2 = new EquipoMaster(Ajedrez.NEGRA);
 							ajedrez.inicarJuego(equipo1, equipo2);
@@ -214,13 +228,21 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 						ajedrez.comenzar();
 
 					} else if (evento.getActionCommand() == "Maquina Vs Persona") {
+						textArea.append(null);
 						Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
-
 						EquipoHumano equipo1 = new EquipoHumano(Ajedrez.BLANCA);
 						equipo1.setTablero(tableroGui);
-						int opcion = JOptionPane.showConfirmDialog(null, "Desea equipo Master?",
-								"Elija nivel de dificultad", JOptionPane.YES_NO_OPTION);
-						if (opcion == 0) {
+						Image img = new ImageIcon("iconoAjedrez.png").getImage();
+						ImageIcon img2 = new ImageIcon(img.getScaledInstance(60, 60, Image.SCALE_SMOOTH));
+						Object opcion = JOptionPane.showInputDialog(
+								   null,
+								   "Seleccione nivel de dificultad:",
+								   "Antes de comenzar a jugar...",
+								   JOptionPane.QUESTION_MESSAGE,
+								   img2,  // null para icono defecto
+								   new Object[] { "Nivel Ofensivo", "Nivel Master"}, 
+								   "Elija nivel de Diicultad");
+						if (opcion == "Nivel Master") {
 							Equipo equipo2 = new EquipoMaster(Ajedrez.NEGRA);
 							ajedrez.inicarJuego(equipo1, equipo2);
 						} else {
@@ -238,6 +260,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 						ajedrez.comenzar();
 
 					} else if (evento.getActionCommand() == "Persona vs Persona") {
+						textArea.append(null);
 						EquipoHumano equipo1 = new EquipoHumano(Ajedrez.BLANCA);
 						equipo1.setTablero(tableroGui);
 						EquipoHumano equipo2 = new EquipoHumano(Ajedrez.NEGRA);
@@ -263,8 +286,10 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 		hilo.start();
 
 	}
+
 	/**
-	 * metodo que efectua un append en un textArea, muestra los movimiento que se efectuan en el tablero 
+	 * metodo que efectua un append en un textArea, muestra los movimiento que se
+	 * efectuan en el tablero
 	 * 
 	 * @param pieza pieza que efectuna el movimiento
 	 * @param celda celda destino de la pieza que es movida
@@ -290,7 +315,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 
 	@Override
 	/**
-	 * Colorea  de verde el boton correspondiente al equipo con el turno actual 
+	 * Colorea de verde el boton correspondiente al equipo con el turno actual
 	 */
 	public void turnoActual(Equipo equipo) {
 		if (equipo.getNombre() == Ajedrez.getSingletoneInstancia().BLANCA) {
@@ -303,34 +328,32 @@ public class VentanaPrincipal extends JFrame implements ActionListener, IJuegoLi
 
 	}
 
-	
-
 	@Override
 	public void JuegoIniciado() {
-		textArea.append("JUEGO INICIADO\n");
+		textArea.setText("Juego Iniciado: \n");
 	}
 
 	@Override
 	public void juegoFinalizado() {
-		textArea.append("JUEGO FINALIZADO\n");
-
+		
 	}
 
 	@Override
 	/**
-	 * muesta la cantidad de piezas vivas y piezas comidas de cada equipo 
+	 * muesta la cantidad de piezas vivas y piezas comidas de cada equipo
 	 */
 	public void piezaComida(Pieza pieza) {
 		if (pieza.getEquipo().getNombre() == Ajedrez.getSingletoneInstancia().BLANCA) {
-			VentanaPrincipal.piezasVivasBlancas = VentanaPrincipal.piezasVivasBlancas - 1;
-			VentanaPrincipal.piezasComidasBlancas = VentanaPrincipal.piezasComidasBlancas + 1;
-			VentanaPrincipal.textField.setText("Piezas Blancas Vivas: " + " " + VentanaPrincipal.piezasVivasBlancas
-					+ "  " + "Piezas Blancas Comidas:" + " " + VentanaPrincipal.piezasComidasBlancas);
+			int vivas = VentanaPrincipal.piezasVivasBlancas - 1;
+			int comidas = VentanaPrincipal.piezasComidasBlancas + 1;
+			
+			VentanaPrincipal.textField.setText("Piezas Blancas Vivas: " + " " + vivas
+					+ "  " + "Piezas Blancas Comidas:" + " " + comidas);
 		} else if (pieza.getEquipo().getNombre() == Ajedrez.getSingletoneInstancia().NEGRA) {
-			VentanaPrincipal.piezasVivasNegras = VentanaPrincipal.piezasVivasNegras - 1;
-			VentanaPrincipal.piezasComidasNegras = VentanaPrincipal.piezasComidasNegras + 1;
-			VentanaPrincipal.textField1.setText("Piezas Negas Vivas: " + " " + VentanaPrincipal.piezasVivasNegras + "  "
-					+ "Piezas Negras Comidas:" + " " + VentanaPrincipal.piezasComidasNegras);
+			int vivas = VentanaPrincipal.piezasVivasNegras - 1;
+			int comidas = VentanaPrincipal.piezasComidasNegras + 1;
+			VentanaPrincipal.textField1.setText("Piezas Negras Vivas: " + " " + vivas + "  "
+					+ "Piezas Negras Comidas:" + " " + comidas);
 		}
 
 	}

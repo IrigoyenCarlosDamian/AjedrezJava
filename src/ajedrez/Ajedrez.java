@@ -4,6 +4,8 @@ import interfaces.IJuegoListener;
 import util.Esperar;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import equipos.EquipoHumano;
 import excepciones.FueraDeTableroException;
 import pieza.*;
@@ -23,7 +25,7 @@ public class Ajedrez {
 	private Equipo equipoEnTurno;
 	private static Ajedrez instancia = new Ajedrez();// singletone
 	private ArrayList<IJuegoListener> juegoListener;
-
+	private  boolean juegoReiniciado;
 	private Ajedrez() {
 		this.juegoListener = new ArrayList<IJuegoListener>();
 	}
@@ -45,6 +47,7 @@ public class Ajedrez {
 	 * @param equipo2 es el equipo con las piezas negras  
 	 */
 	public void inicarJuego(Equipo equipo1, Equipo equipo2) {
+		this.juegoReiniciado=false;
 		this.tablero = new Tablero();
 		this.blancas = equipo1;
 		this.negras = equipo2;
@@ -79,6 +82,14 @@ public class Ajedrez {
 			}
 		}
 		
+		if(this.juegoReiniciado==false) {
+			if(this.blancas.getRey().getEstaViva()) {
+				JOptionPane.showMessageDialog(null,"Gano El Equipo Blanco");
+			}else {
+				JOptionPane.showMessageDialog(null,"Gano El Equipo Negro");
+			}
+		}
+		
 		// Se termnino la partida
 		for (IJuegoListener escuchador : juegoListener) {
 			escuchador.juegoFinalizado();
@@ -105,7 +116,7 @@ public class Ajedrez {
 
 	private boolean esFinJuego(Equipo equipoEnTurno, Equipo equipoEnemigo) {
 
-		if (equipoEnTurno.getRey().getEstaViva() && equipoEnemigo.getRey().getEstaViva()) {
+		if (equipoEnTurno.getRey().getEstaViva() && equipoEnemigo.getRey().getEstaViva()&& this.juegoReiniciado==false){
 			int i = 0;
 			Pieza rey = equipoEnTurno.getRey();
 			i = this.getTablero().quienesMatan(rey).size();
@@ -270,5 +281,13 @@ public class Ajedrez {
 	 */
 	public void addJuegoListener(IJuegoListener listener) {
 		this.juegoListener.add(listener);
+	}
+	/**
+	 * 
+	 * @param juegoReiniciado booleano que determina si el juego es reiniciado 
+	 * si juegoReinicado es True se debe de terminar el juego y volver  a comenzar desde cero 
+	 */
+	public void setJuegoReiniciado(boolean juegoReiniciado) {
+		this.juegoReiniciado = juegoReiniciado;
 	}
 }

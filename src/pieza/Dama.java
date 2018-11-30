@@ -43,17 +43,27 @@ public class Dama extends Pieza {
 	}
 
 	/**
-	 * 
-	 * @param c es la celda acutal en la quese encuentra la dama
-	 * @param listaCelda ArrayList  con las celdas posibles al a que puede ir la dama 
-	 * @param fila  fila con la que es llamado el metodo movimento
-	 * @param columna columan con la que es llamdo el metodo movimiento 
-	 *  Se enlistan las celdas posibles segun los movimientos d la dama si en fila
-	 	 viene un +1 y culumna 0 significa movimiento SUR si en fila viene un -1 y
-	 	 culumna 0 significa movimiento NORTE si en columna viene un +1 y fila 0
-	 	 significa movimiento ESTE si en columna viene un -1 y fila 0 significa
-	 	 movimiento OESTE
+	 * Metodo:  El metodo "movimiento" sirve para enlistar las celdas en las que puede moverse una pieza en una direccion dada.
+	 * Se enlistan las celdas libres en esa direccion hasta que se topa con una pieza, si esta pieza es enemiga
+	 * tambien se enlista, en caso contrario no se agrega a la lista.
+	 * Si esa pieza es enemiga, ademas de enlistarla en la lista que viene por parametro,
+	 * tambien se agrega en la lista de jugadas posibles del equipo.
+	 * Esta direccion esta dada por los parametros "fila" y "columna".
+	 * La direcccion puede ser Hacia:
+	 * Norte con fila y columna (-1,0) 
+	 * Nor-Este con fila y columna (-1,+1)
+	 * Este con fila y columna (0,+1)
+	 * Sur-Este con fila y columna (+1,+1)
+	 * Sur  con fila y columna (+1,0)
+	 * Sur-Oeste con fila y columna (+1,-1)
+	 * Oeste  con fila y columna (0,-1)
+	 * Nor-Oeste 	con fila y columna (-1,-1)
+	 * @param c: Celda donde se encuentra la pieza que se va a mover actualmente
+	 * @param listaCelda: Lista donde se cargaran las celdas donde se puede mover la pieza
+	 * @param fila: Solo puede venir un 1, -1 o un 0. La fila puede aumentar(1), decrementar(-1) o quedar fija(0).
+	 * @param columna: Solo puede venir un 1, -1 o un 0. La columna puede aumentar(1), decrementar(-1) o quedar fija(0).    
 	 */
+
 	
 	private void movimiento(Celda c, ArrayList<Celda> listaCelda, int fila, int columna) {
 		

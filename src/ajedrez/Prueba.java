@@ -18,8 +18,9 @@ public class Prueba {
 		Ajedrez ajedrez = Ajedrez.getSingletoneInstancia();
 		TableroGui tableroGui =new TableroGui();
 		VentanaPrincipal ventanaPrincipal= new VentanaPrincipal(tableroGui);
+		ventanaPrincipal.textArea.setText(null);
 		ventanaPrincipal.setVisible(true);
 		ventanaPrincipal.setAjedrez(ajedrez);
-		ventanaPrincipal.setResizable(false);
+	
 	}
 }
